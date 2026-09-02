@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block title %}Solicitar orçamento | Silas Mendes Desenvolvedor{% endblock %}
+{% block content %}
+<section class="request-shell quote-shell">
+  <div class="container request-layout">
+    <aside class="request-intro">
+      <span class="request-kicker"><i></i> NOVO PROJETO</span>
+      <h1>Solicitar<br><span>orçamento</span></h1>
+      <p>Conte um pouco sobre sua ideia. As informações abaixo vão me ajudar a entender o projeto antes do primeiro contato.</p>
+
+      <div class="request-info-card">
+        <div class="request-info-icon">⌘</div>
+        <div>
+          <strong>Sites e sistemas</strong>
+          <span>Projetos personalizados para sua necessidade.</span>
+        </div>
+      </div>
+      <div class="request-info-card">
+        <div class="request-info-icon">✓</div>
+        <div>
+          <strong>Acompanhamento</strong>
+          <span>Seu orçamento ficará salvo para consulta na área do cliente.</span>
+        </div>
+      </div>
+    </aside>
+
+    <div class="request-card quote-card">
+      <div class="request-card-head">
+        <div>
+          <span>SOLICITAÇÃO DE ORÇAMENTO</span>
+          <h2>Conte sobre seu projeto</h2>
+        </div>
+        <div class="request-step">01</div>
+      </div>
+
+      <form method="post" class="request-form">
+        <div class="request-two-cols">
+          <label class="request-field">
+            <span>Tipo do projeto <b>*</b></span>
+            <select name="project_type" required>
+              <option value="">Selecione</option>
+              <option>Site institucional</option>
+              <option>Portfólio profissional</option>
+              <option>Landing page</option>
+              <option>Loja / catálogo</option>
+              <option>Sistema web</option>
+              <option>Painel administrativo</option>
+              <option>Automação</option>
+              <option>Outro</option>
+            </select>
+          </label>
+
+          <label class="request-field">
+            <span>Nome do projeto</span>
+            <input name="project_name" placeholder="Ex.: Site da minha empresa">
+          </label>
+        </div>
+
+        <label class="request-field">
+          <span>Descrição do projeto <b>*</b></span>
+          <textarea name="description" rows="7" required placeholder="Explique o que você gostaria que o site ou sistema fizesse..."></textarea>
+          <small>Você pode citar funções, público, referências e objetivos do projeto.</small>
+        </label>
+
+        <div class="request-two-cols">
+          <label class="request-field">
+            <span>Faixa de orçamento</span>
+            <input name="budget" placeholder="Ex.: até R$ 1.500">
+          </label>
+          <label class="request-field">
+            <span>Prazo desejado</span>
+            <input name="deadline" placeholder="Ex.: 30 dias">
+          </label>
+        </div>
+
+        <button class="request-submit" type="submit">
+          <span>Registrar e enviar pelo WhatsApp</span>
+          <strong>→</strong>
+        </button>
+        <p class="request-note">O envio não gera cobrança. É apenas uma solicitação inicial de orçamento.</p>
+      </form>
+    </div>
+  </div>
+</section>
+{% endblock %}

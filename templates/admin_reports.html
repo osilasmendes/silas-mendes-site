@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Relatórios financeiros | Administração{% endblock %}
+{% block content %}
+<style>
+.rep-page{min-height:calc(100vh - 150px);padding:45px 0 72px;background:#030b15;color:#f6f9ff}.rep-wrap{width:min(1220px,calc(100% - 36px));margin:auto}.rep-head{display:flex;justify-content:space-between;align-items:end;gap:20px;margin-bottom:20px}.rep-head span{color:#70adff;font-size:11px;font-weight:850;letter-spacing:.12em}.rep-head h1{margin:7px 0 5px;font-size:34px}.rep-head p{margin:0;color:#91a3ba}.rep-back{padding:11px 14px;border:1px solid #29405b;border-radius:9px;color:#dbe8f5;text-decoration:none;font-size:12px}
+.rep-stats{display:grid;grid-template-columns:repeat(5,1fr);gap:11px;margin-bottom:18px}.rep-stat,.rep-card{border:1px solid #1c3048;border-radius:15px;background:linear-gradient(145deg,#091725,#05101c)}.rep-stat{padding:16px}.rep-stat span{display:block;color:#7489a2;font-size:9px;text-transform:uppercase;letter-spacing:.08em}.rep-stat strong{display:block;margin:6px 0 2px;font-size:20px}.rep-stat small{color:#71869e;font-size:10px}.received strong{color:#6ee7a1}.pending strong{color:#fbbf24}
+.rep-card{padding:20px;margin-top:15px}.rep-card h2{margin:0 0 5px;font-size:19px}.rep-card>p{margin:0 0 14px;color:#7f94ac;font-size:11px}.rep-table-wrap{overflow:auto}.rep-table{width:100%;border-collapse:collapse;min-width:850px}.rep-table th,.rep-table td{padding:11px 9px;border-bottom:1px solid #172b41;text-align:left;font-size:11px;vertical-align:top}.rep-table th{color:#71869e;font-size:9px;text-transform:uppercase;letter-spacing:.07em}.rep-table td strong{display:block}.rep-table td small{display:block;color:#71869e;margin-top:3px}.rep-value{color:#74d89a;font-weight:850}.rep-pending{color:#fbbf24;font-weight:850}.rep-cancel{color:#f2a9a9;max-width:330px}.rep-empty{padding:24px;text-align:center;color:#71869e}
+@media(max-width:1050px){.rep-stats{grid-template-columns:repeat(3,1fr)}}@media(max-width:750px){.rep-stats{grid-template-columns:1fr 1fr}.rep-head{align-items:flex-start;flex-direction:column}}@media(max-width:520px){.rep-stats{grid-template-columns:1fr}}
+</style>
+<section class="rep-page"><div class="rep-wrap">
+<header class="rep-head"><div><span>ADMINISTRAÇÃO · FINANCEIRO</span><h1>Vendas, ganhos e recebimentos</h1><p>Separe o valor vendido do dinheiro que realmente entrou e do que ainda falta receber.</p></div><a class="rep-back" href="{{ url_for('admin_dashboard') }}">← Voltar ao painel</a></header>
+
+<div class="rep-stats">
+<article class="rep-stat"><span>Vendido no mês</span><strong>{{ format_brl(current_month_sales_cents) }}</strong><small>ordens concluídas</small></article>
+<article class="rep-stat received"><span>Recebido no mês</span><strong>{{ format_brl(current_month_received_cents) }}</strong><small>dinheiro que entrou</small></article>
+<article class="rep-stat"><span>Total vendido</span><strong>{{ format_brl(total_sales_cents) }}</strong><small>histórico concluído</small></article>
+<article class="rep-stat received"><span>Total recebido</span><strong>{{ format_brl(total_received_cents) }}</strong><small>serviços + projetos</small></article>
+<article class="rep-stat pending"><span>A receber</span><strong>{{ format_brl(total_pending_cents) }}</strong><small>saldo de projetos</small></article>
+</div>
+
+<section class="rep-card"><h2>Resumo por mês</h2><p>“Recebido” usa a data de cada pagamento de site/sistema, permitindo acompanhar entradas e parcelas corretamente.</p><div class="rep-table-wrap"><table class="rep-table"><thead><tr><th>Mês</th><th>Pedidos concluídos</th><th>Vendido</th><th>Recebido</th></tr></thead><tbody>
+{% for row in monthly_rows %}<tr><td><strong>{{ row.label }}</strong></td><td>{{ row.count }}</td><td>{{ format_brl(row.sold_cents) }}</td><td class="rep-value">{{ format_brl(row.received_cents) }}</td></tr>{% else %}<tr><td colspan="4" class="rep-empty">Nenhuma movimentação financeira registrada.</td></tr>{% endfor %}
+</tbody></table></div></section>
+
+<section class="rep-card"><h2>Recebimentos de sites e sistemas</h2><p>Cada entrada, parcela ou saldo registrado aparece individualmente neste extrato.</p><div class="rep-table-wrap"><table class="rep-table"><thead><tr><th>Data</th><th>Projeto</th><th>Cliente</th><th>Forma</th><th>Observação</th><th>Recebido</th></tr></thead><tbody>
+{% for entry in project_payment_entries %}<tr><td>{{ entry.date.strftime('%d/%m/%Y às %H:%M') }}</td><td><strong>#{{ entry.quote.id }} · {{ entry.quote.project_name or entry.quote.project_type }}</strong></td><td>{{ entry.customer.name }}<small>{{ entry.customer.email }}</small></td><td>{{ entry.payment_method }}</td><td>{{ entry.note or "—" }}</td><td class="rep-value">{{ format_brl(entry.amount_cents) }}</td></tr>{% else %}<tr><td colspan="6" class="rep-empty">Nenhum pagamento de projeto registrado ainda.</td></tr>{% endfor %}
+</tbody></table></div></section>
+
+<section class="rep-card"><h2>Extrato de pedidos concluídos</h2><div class="rep-table-wrap"><table class="rep-table"><thead><tr><th>Data</th><th>Ordem</th><th>Cliente</th><th>Descrição</th><th>Valor final</th><th>Recebido</th><th>A receber</th></tr></thead><tbody>
+{% for entry in completed_entries %}<tr><td>{{ entry.date.strftime('%d/%m/%Y') }}</td><td><strong>{{ entry.type }} #{{ entry.id }}</strong></td><td>{{ entry.customer.name }}<small>{{ entry.customer.email }}</small></td><td>{{ entry.description }}</td><td>{{ format_brl(entry.value_cents) }}</td><td class="rep-value">{{ format_brl(entry.received_cents) }}</td><td class="rep-pending">{{ format_brl(entry.pending_cents) }}</td></tr>{% else %}<tr><td colspan="7" class="rep-empty">Nenhum pedido concluído.</td></tr>{% endfor %}
+</tbody></table></div></section>
+
+<section class="rep-card"><h2>Extrato de pedidos cancelados</h2><div class="rep-table-wrap"><table class="rep-table"><thead><tr><th>Data</th><th>Ordem</th><th>Cliente</th><th>Descrição</th><th>Valor de referência</th><th>Motivo</th></tr></thead><tbody>
+{% for entry in cancelled_entries %}<tr><td>{{ entry.date.strftime('%d/%m/%Y') }}</td><td><strong>{{ entry.type }} #{{ entry.id }}</strong></td><td>{{ entry.customer.name }}<small>{{ entry.customer.email }}</small></td><td>{{ entry.description }}</td><td>{{ format_brl(entry.value_cents) }}</td><td class="rep-cancel">{{ entry.reason }}</td></tr>{% else %}<tr><td colspan="6" class="rep-empty">Nenhum pedido cancelado.</td></tr>{% endfor %}
+</tbody></table></div></section>
+</div></section>
+{% endblock %}

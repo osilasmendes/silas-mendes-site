@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% block title %}Política de Privacidade | Silas Mendes Desenvolvedor{% endblock %}
+
+{% block content %}
+<style>
+.legal-page{--bg:#030b15;--card:#071422;--border:#1c3048;--text:#f5f8ff;--muted:#97a9bd;min-height:70vh;padding:52px 0 76px;background:radial-gradient(circle at 12% 0%,rgba(25,118,255,.11),transparent 28%),var(--bg);color:var(--text)}
+.legal-page *{box-sizing:border-box}.legal-wrap{width:min(980px,calc(100% - 34px));margin:auto}.legal-hero{padding:30px;border:1px solid var(--border);border-radius:18px;background:linear-gradient(145deg,#091725,#05101c);margin-bottom:16px}.legal-kicker{color:#6eaeff;font-size:11px;font-weight:850;letter-spacing:.12em}.legal-hero h1{margin:10px 0 9px;font-size:38px;letter-spacing:-1px}.legal-hero p{margin:0;color:var(--muted);line-height:1.7}.legal-meta{margin-top:15px;color:#71869e;font-size:11px}
+.legal-card{padding:26px 30px;border:1px solid var(--border);border-radius:16px;background:#06121f}.legal-card h2{margin:30px 0 9px;font-size:20px}.legal-card h2:first-child{margin-top:0}.legal-card h3{font-size:15px;margin:18px 0 6px}.legal-card p,.legal-card li{color:#a8b7c8;font-size:13px;line-height:1.75}.legal-card ul{padding-left:20px}.legal-highlight{padding:15px 16px;border-radius:11px;border:1px solid rgba(25,118,255,.28);background:rgba(25,118,255,.07);color:#c9d9eb!important}.legal-warning{padding:14px 16px;border-radius:11px;background:#091625;border-left:3px solid #4f9cff}.legal-card a{color:#66a8ff}.legal-actions{display:flex;gap:10px;margin-top:20px}.legal-actions a{padding:11px 14px;border-radius:9px;text-decoration:none;font-weight:750;font-size:12px}.legal-primary{background:#1976ff;color:white!important}.legal-secondary{border:1px solid #29405b;color:#d9e5f2!important}
+@media(max-width:620px){.legal-hero,.legal-card{padding:22px}.legal-hero h1{font-size:31px}.legal-actions{flex-direction:column}}
+</style>
+
+<section class="legal-page">
+  <div class="legal-wrap">
+    <header class="legal-hero">
+      <span class="legal-kicker">PRIVACIDADE E PROTEÇÃO DE DADOS</span>
+      <h1>Política de Privacidade</h1>
+      <p>Esta política explica quais dados pessoais podem ser tratados no site Silas Mendes Desenvolvedor, para quais finalidades eles são usados e como o cliente pode exercer seus direitos.</p>
+      <div class="legal-meta">Última atualização: 02 de setembro de 2026.</div>
+    </header>
+
+    <article class="legal-card">
+      <p class="legal-highlight"><strong>Resumo:</strong> os dados da sua conta são utilizados para cadastro, autenticação, atendimento, orçamento, acompanhamento de solicitações, comunicação, avaliações e administração da plataforma. Os dados não são comercializados.</p>
+
+      <h2>1. Quem é responsável pelos dados</h2>
+      <p>Para os tratamentos realizados diretamente nesta plataforma, <strong>Silas Mendes Desenvolvedor</strong> atua como responsável pelas decisões relacionadas ao uso dos dados pessoais. Solicitações relacionadas à privacidade podem ser feitas pelos canais de contato disponíveis no próprio site.</p>
+
+      <h2>2. Dados que podem ser coletados</h2>
+      <ul>
+        <li>nome completo, e-mail e número de WhatsApp/telefone informados no cadastro;</li>
+        <li>quando o cliente optar por completar o perfil: cidade, estado (UF), profissão e empresa;</li>
+        <li>credenciais de acesso, sendo a senha armazenada de forma protegida por hash e não em texto simples;</li>
+        <li>informações inseridas em pedidos de atendimento e solicitações de orçamento;</li>
+        <li>serviço escolhido, valor registrado, preferência de pagamento e forma de contato;</li>
+        <li>status, datas e histórico operacional das solicitações;</li>
+        <li>notas de 1 a 5 estrelas e comentários enviados nas avaliações;</li>
+        <li>dados técnicos essenciais ao funcionamento e à segurança da sessão, quando gerados pela aplicação ou infraestrutura utilizada.</li>
+      </ul>
+
+      <h2>3. Dados de pagamento</h2>
+      <p class="legal-warning"><strong>Importante:</strong> a plataforma registra apenas a preferência informada pelo cliente, como Pix, cartão de crédito ou cartão de débito. O site não solicita nem armazena número completo de cartão, código de segurança (CVV), senha bancária ou credenciais de acesso a instituições financeiras.</p>
+
+      <h2>4. Para que os dados são utilizados</h2>
+      <ul>
+        <li>criar, autenticar e administrar a conta do cliente;</li>
+        <li>identificar o solicitante e permitir contato sobre o serviço;</li>
+        <li>registrar, executar e acompanhar atendimentos e orçamentos;</li>
+        <li>organizar valores, preferências de pagamento e etapas do pedido;</li>
+        <li>enviar ou preparar comunicações relacionadas à solicitação, inclusive pelo WhatsApp;</li>
+        <li>receber avaliações para melhoria do atendimento, do site e dos serviços;</li>
+        <li>prevenir abuso, fraude, acessos indevidos e manter a segurança da aplicação;</li>
+        <li>cumprir obrigações legais ou resguardar direitos quando necessário.</li>
+      </ul>
+
+      <h2>5. Avaliações e depoimentos</h2>
+      <p>As notas enviadas pelo cliente podem ser utilizadas internamente para avaliação da qualidade. Um comentário somente poderá aparecer publicamente na seção de depoimentos após análise e aprovação administrativa. A aprovação para publicação não transforma outros dados privados da conta em informação pública.</p>
+
+      <h2>6. Compartilhamento necessário</h2>
+      <p>Os dados podem ser processados por fornecedores técnicos estritamente necessários à operação, como serviços de hospedagem, infraestrutura, banco de dados ou comunicação. Quando o cliente escolhe continuar uma solicitação pelo WhatsApp, informações do pedido podem ser encaminhadas para esse serviço de comunicação.</p>
+      <p>Os dados pessoais não são vendidos. Eventual divulgação ou compartilhamento adicional somente deverá ocorrer quando houver necessidade legítima, autorização aplicável ou obrigação legal.</p>
+
+      <h2>7. Armazenamento e conservação</h2>
+      <p>Os dados são mantidos enquanto forem necessários para manter a conta, prestar os serviços, administrar solicitações, preservar registros necessários e atender obrigações legais ou exercício regular de direitos. Quando não houver mais finalidade ou fundamento aplicável, os dados poderão ser excluídos ou anonimizados, conforme o caso.</p>
+
+      <h2>8. Segurança</h2>
+      <p>São adotadas medidas compatíveis com o porte e as características do serviço para reduzir riscos de acesso não autorizado, perda, alteração ou divulgação indevida. Nenhum sistema conectado à internet pode oferecer garantia absoluta de segurança, por isso as medidas devem ser revistas conforme a evolução da plataforma.</p>
+
+      <h2 id="direitos">9. Direitos do titular</h2>
+      <p>Nos termos da legislação aplicável, o titular poderá solicitar, quando cabível, confirmação da existência de tratamento, acesso aos dados, correção de informações incompletas ou desatualizadas, anonimização, bloqueio ou eliminação de dados tratados em desconformidade, informações sobre compartilhamento, revogação de consentimento e demais direitos previstos na LGPD.</p>
+      <p>Alguns dados podem precisar ser preservados mesmo após um pedido de exclusão quando existir obrigação legal, necessidade de defesa de direitos ou outra hipótese de conservação permitida.</p>
+
+      <h2>10. Cookies e sessão</h2>
+      <p>A aplicação pode utilizar cookies ou mecanismos equivalentes estritamente necessários para manter a sessão de login, autenticação e segurança. Caso futuramente sejam incluídas ferramentas de publicidade, análise comportamental ou rastreamento não essencial, esta política deverá ser atualizada e, quando necessário, serão apresentados controles de consentimento específicos.</p>
+
+      <h2>11. Alterações desta política</h2>
+      <p>Esta política poderá ser atualizada para acompanhar mudanças no site, nos serviços ou na legislação. A versão publicada nesta página indicará a data da última atualização.</p>
+
+      <h2>12. Contato</h2>
+      <p>Para dúvidas, correção, acesso ou solicitação relacionada aos seus dados pessoais, utilize os canais de contato disponibilizados no site Silas Mendes Desenvolvedor.</p>
+
+      <div class="legal-actions">
+        <a class="legal-primary" href="{{ url_for('register') }}">Criar conta</a>
+        <a class="legal-secondary" href="{{ url_for('terms_of_use') }}">Ler Termos de Uso</a>
+      </div>
+    </article>
+  </div>
+</section>
+{% endblock %}

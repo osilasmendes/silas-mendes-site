@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}Avaliar atendimento | Silas Mendes Desenvolvedor{% endblock %}
+{% block content %}
+<style>
+.rv-page{--bg:#030b15;--card:#081523;--border:#1c3048;--text:#f6f9ff;--muted:#92a5bd;--blue:#1976ff;min-height:calc(100vh - 150px);padding:48px 0 70px;background:radial-gradient(circle at 15% 0%,rgba(25,118,255,.13),transparent 28%),var(--bg);color:var(--text)}
+.rv-page *{box-sizing:border-box}.rv-wrap{width:min(900px,calc(100% - 30px));margin:auto}.rv-card{padding:30px;border:1px solid var(--border);border-radius:19px;background:linear-gradient(145deg,#091725,#05101c);box-shadow:0 20px 55px rgba(0,0,0,.2)}
+.rv-kicker{color:#6faeff;font-size:12px;font-weight:850;letter-spacing:.12em}.rv-card h1{margin:10px 0 7px;font-size:34px}.rv-lead{margin:0;color:var(--muted);line-height:1.6}.rv-service{margin:22px 0;padding:15px;border:1px solid #1c3450;border-radius:12px;background:#061320}.rv-service span{display:block;color:#6f86a0;font-size:10px;text-transform:uppercase;letter-spacing:.1em}.rv-service strong{display:block;margin-top:5px}.rv-service p{margin:5px 0 0;color:#91a3ba;font-size:13px}
+.rating-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:13px;margin:22px 0}.rating-card{padding:17px;border:1px solid #1a2e45;border-radius:13px;background:#071522}.rating-card h3{margin:0 0 4px;font-size:15px}.rating-card p{margin:0 0 13px;color:#8094ac;font-size:11px;line-height:1.45}
+.stars{display:flex;flex-direction:row-reverse;justify-content:flex-end;gap:3px}.stars input{position:absolute;opacity:0}.stars label{font-size:29px;color:#34475f;cursor:pointer;line-height:1}.stars label:hover,.stars label:hover~label,.stars input:checked~label{color:#fbbf24}
+.rv-field{display:grid;gap:7px}.rv-field span{font-size:13px;font-weight:750}.rv-field textarea{min-height:135px;resize:vertical;padding:13px;border:1px solid #29405b;border-radius:10px;background:#06111e;color:white;font:inherit;outline:none}.rv-field textarea:focus{border-color:#1976ff;box-shadow:0 0 0 3px rgba(25,118,255,.12)}
+.rv-note{margin:13px 0;color:#758aa3;font-size:11px;line-height:1.5}.rv-actions{display:flex;gap:10px;margin-top:18px}.rv-actions button,.rv-actions a{min-height:48px;padding:0 18px;border-radius:10px;display:inline-flex;align-items:center;justify-content:center;font-weight:800;text-decoration:none}.rv-actions button{border:0;background:linear-gradient(135deg,#1976ff,#2563eb);color:white;cursor:pointer}.rv-actions a{border:1px solid #29405b;background:#07131f;color:#dbe7f4}
+@media(max-width:760px){.rating-grid{grid-template-columns:1fr}.rv-card{padding:22px}.rv-actions{flex-direction:column}}
+</style>
+
+<section class="rv-page">
+  <div class="rv-wrap">
+    <div class="rv-card">
+      <span class="rv-kicker">AVALIAÇÃO DO ATENDIMENTO</span>
+      <h1>Conte como foi sua experiência</h1>
+      <p class="rv-lead">Sua avaliação ajuda a melhorar o atendimento, o site e a qualidade dos serviços realizados.</p>
+
+      <div class="rv-service">
+        <span>Atendimento concluído</span>
+        <strong>#{{ item.id }} · {{ item.service }}</strong>
+        <p>{{ item.details }}</p>
+      </div>
+
+      <form method="post">
+        <div class="rating-grid">
+          {% set groups = [
+            ("rating_attendance", "Atendimento", "Cordialidade, comunicação e acompanhamento."),
+            ("rating_site", "Site", "Facilidade para solicitar e acompanhar seu pedido."),
+            ("rating_service", "Serviço realizado", "Qualidade do serviço entregue.")
+          ] %}
+          {% for field, title, desc in groups %}
+          <div class="rating-card">
+            <h3>{{ title }}</h3>
+            <p>{{ desc }}</p>
+            <div class="stars" aria-label="{{ title }}">
+              {% for n in [5,4,3,2,1] %}
+              <input id="{{ field }}_{{ n }}" type="radio" name="{{ field }}" value="{{ n }}" required>
+              <label for="{{ field }}_{{ n }}" title="{{ n }} estrela{% if n != 1 %}s{% endif %}">★</label>
+              {% endfor %}
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+
+        <label class="rv-field">
+          <span>Comentário (opcional)</span>
+          <textarea name="comment" maxlength="1500" placeholder="Conte o que você achou do atendimento e do serviço..."></textarea>
+        </label>
+        <p class="rv-note">Seu comentário só será exibido publicamente na área de depoimentos após análise e aprovação do administrador.</p>
+
+        <div class="rv-actions">
+          <button type="submit">Enviar avaliação ★</button>
+          <a href="{{ url_for('client_dashboard') }}">Avaliar depois</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+{% endblock %}

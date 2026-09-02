@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}Avaliações | Administração{% endblock %}
+{% block content %}
+<style>
+.ar-page{--bg:#030b15;--card:#071422;--border:#1b2e45;--text:#f6f9ff;--muted:#8fa2ba;min-height:calc(100vh - 150px);padding:45px 0 70px;background:var(--bg);color:var(--text)}
+.ar-page *{box-sizing:border-box}.ar-wrap{width:min(1180px,calc(100% - 38px));margin:auto}.ar-head{display:flex;justify-content:space-between;align-items:end;gap:20px;margin-bottom:24px}.ar-head span{color:#70adff;font-size:12px;font-weight:850;letter-spacing:.12em}.ar-head h1{margin:9px 0 6px;font-size:34px}.ar-head p{margin:0;color:var(--muted)}.ar-back{padding:11px 14px;border:1px solid #29405b;border-radius:10px;color:#eaf2ff;text-decoration:none}
+.ar-summary{margin-bottom:15px;padding:14px 16px;border:1px solid rgba(245,158,11,.25);border-radius:12px;background:rgba(245,158,11,.07);color:#d6c08e}.ar-list{display:grid;gap:14px}.ar-card{padding:20px;border:1px solid var(--border);border-radius:15px;background:linear-gradient(145deg,#091725,#05101c)}.ar-top{display:flex;justify-content:space-between;gap:15px;align-items:start}.ar-person strong{display:block;font-size:16px}.ar-person span{display:block;margin-top:3px;color:#7890aa;font-size:12px}.ar-badge{padding:6px 9px;border-radius:999px;font-size:10px;font-weight:850}.pending{color:#fbbf24;background:rgba(245,158,11,.10)}.approved{color:#6ee7a1;background:rgba(34,197,94,.10)}.rejected{color:#aab8c8;background:rgba(148,163,184,.10)}.ar-ratings{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin:16px 0}.ar-rating{padding:10px;border:1px solid #172c44;border-radius:10px;background:#061320}.ar-rating span{display:block;color:#70869e;font-size:10px;text-transform:uppercase;letter-spacing:.07em}.ar-rating strong{display:block;margin-top:4px;color:#fbbf24}.ar-comment{margin-top:12px;padding:14px;border-radius:10px;background:#071523;border-left:3px solid #1976ff;color:#cbd8e6;line-height:1.55;font-size:13px}.ar-actions{display:flex;gap:9px;margin-top:15px}.ar-actions form{margin:0}.ar-actions button{border:0;border-radius:9px;padding:10px 13px;font-weight:800;cursor:pointer}.approve{background:#1976ff;color:white}.reject{background:#0a1725;color:#cbd8e6;border:1px solid #29405b!important}.ar-empty{padding:40px;text-align:center;border:1px solid var(--border);border-radius:15px;background:#07131f;color:var(--muted)}
+@media(max-width:760px){.ar-head{align-items:flex-start;flex-direction:column}.ar-ratings{grid-template-columns:1fr 1fr}.ar-top{flex-direction:column}}
+</style>
+
+<section class="ar-page">
+  <div class="ar-wrap">
+    <header class="ar-head">
+      <div><span>ADMINISTRAÇÃO</span><h1>Avaliações dos clientes</h1><p>Aprove apenas os comentários que deseja publicar como depoimento.</p></div>
+      <a class="ar-back" href="{{ url_for('admin_dashboard') }}">← Voltar ao painel</a>
+    </header>
+
+    {% if pending_count %}
+    <div class="ar-summary">★ {{ pending_count }} avaliação{% if pending_count != 1 %}ões{% endif %} aguardando sua análise.</div>
+    {% endif %}
+
+    <div class="ar-list">
+      {% for review in reviews %}
+      <article class="ar-card">
+        <div class="ar-top">
+          <div class="ar-person">
+            <strong>{{ review.customer.name }}</strong>
+            <span>#{{ review.service_request.id }} · {{ review.service_request.service }} · {{ review.created_at.strftime('%d/%m/%Y às %H:%M') }}</span>
+          </div>
+          <span class="ar-badge {% if review.testimonial_status == 'Aprovado' %}approved{% elif review.testimonial_status == 'Não publicar' %}rejected{% else %}pending{% endif %}">
+            {{ review.testimonial_status }}
+          </span>
+        </div>
+
+        <div class="ar-ratings">
+          <div class="ar-rating"><span>Atendimento</span><strong>{{ "★" * review.rating_attendance }}{{ "☆" * (5-review.rating_attendance) }}</strong></div>
+          <div class="ar-rating"><span>Site</span><strong>{{ "★" * review.rating_site }}{{ "☆" * (5-review.rating_site) }}</strong></div>
+          <div class="ar-rating"><span>Serviço</span><strong>{{ "★" * review.rating_service }}{{ "☆" * (5-review.rating_service) }}</strong></div>
+          <div class="ar-rating"><span>Média</span><strong>{{ review.average_rating }}/5</strong></div>
+        </div>
+
+        <div class="ar-comment">{{ review.comment or "Cliente não deixou comentário." }}</div>
+
+        {% if review.testimonial_status == "Pendente" %}
+        <div class="ar-actions">
+          <form method="post" action="{{ url_for('moderate_review', review_id=review.id, action='aprovar') }}">
+            <button class="approve" type="submit">Aprovar depoimento</button>
+          </form>
+          <form method="post" action="{{ url_for('moderate_review', review_id=review.id, action='rejeitar') }}">
+            <button class="reject" type="submit">Não publicar</button>
+          </form>
+        </div>
+        {% endif %}
+      </article>
+      {% else %}
+      <div class="ar-empty">Nenhuma avaliação recebida ainda.</div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

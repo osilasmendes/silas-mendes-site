@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block title %}Clientes | Administração{% endblock %}
+{% block content %}
+<style>
+.au-page{min-height:calc(100vh - 150px);padding:45px 0 70px;background:#030b15;color:#f6f9ff}
+.au-wrap{width:min(1180px,calc(100% - 36px));margin:auto}
+.au-head{display:flex;justify-content:space-between;gap:20px;align-items:end;margin-bottom:20px}
+.au-head span{color:#70adff;font-size:11px;font-weight:850;letter-spacing:.12em}.au-head h1{margin:7px 0 5px;font-size:34px}.au-head p{margin:0;color:#91a3ba}
+.au-btn{min-height:42px;padding:0 14px;display:inline-flex;align-items:center;justify-content:center;border-radius:9px;text-decoration:none;font-size:12px;font-weight:800}
+.au-back{border:1px solid #29405b;color:#dbe8f5}.au-primary{background:#1976ff;color:#fff;border:0;cursor:pointer}
+.au-grid{display:grid;grid-template-columns:330px 1fr;gap:18px;align-items:start}.au-card{border:1px solid #1c3048;border-radius:16px;background:linear-gradient(145deg,#091725,#05101c);padding:20px}
+.au-card h2{margin:0 0 15px;font-size:19px}.au-form{display:grid;gap:11px}.au-form label{display:grid;gap:5px}.au-form span{font-size:11px;font-weight:750;color:#cbd8e6}.au-form input,.au-form select{min-height:42px;padding:0 11px;border:1px solid #29405b;border-radius:9px;background:#06121f;color:#fff}
+.au-table-wrap{overflow:auto}.au-table{width:100%;border-collapse:collapse;min-width:760px}.au-table th,.au-table td{padding:12px 10px;border-bottom:1px solid #172b41;text-align:left;font-size:12px;vertical-align:middle}.au-table th{color:#6f849c;font-size:9px;text-transform:uppercase;letter-spacing:.08em}.au-table td strong{display:block}.au-table td small{display:block;color:#70869e;margin-top:3px}
+.au-client{display:flex;align-items:center;gap:10px;min-width:210px}
+.au-avatar{width:42px;height:42px;flex:0 0 42px;border-radius:50%;display:grid;place-items:center;overflow:hidden;background:linear-gradient(145deg,#143c67,#0a2037);border:1px solid #31587f;color:#eaf4ff;font-size:15px;font-weight:900}
+.au-avatar img{width:100%;height:100%;object-fit:cover;display:block}
+.au-client-copy{min-width:0}.au-client-copy strong,.au-client-copy small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.au-state{display:inline-flex;padding:5px 8px;border-radius:999px;font-size:10px;font-weight:800}.au-state.active{color:#6ee7a1;background:rgba(34,197,94,.1)}.au-state.blocked{color:#fca5a5;background:rgba(239,68,68,.1)}
+.au-actions{display:flex;flex-wrap:wrap;gap:6px}.au-actions a,.au-actions button{min-height:32px;padding:0 9px;border-radius:7px;font-size:10px;font-weight:800;text-decoration:none;cursor:pointer}.edit{background:#1976ff;color:#fff;border:0}.block{background:#091725;color:#f8c56c;border:1px solid #3f3420}.delete{background:#1a0b10;color:#fca5a5;border:1px solid #4a1f28}
+@media(max-width:900px){.au-grid{grid-template-columns:1fr}.au-head{align-items:flex-start;flex-direction:column}}
+</style>
+<section class="au-page"><div class="au-wrap">
+<header class="au-head"><div><span>ADMINISTRAÇÃO</span><h1>Clientes e usuários</h1><p>Consulte, edite, bloqueie ou exclua contas cadastradas.</p></div><a class="au-btn au-back" href="{{ url_for('admin_dashboard') }}">← Voltar ao painel</a></header>
+<div class="au-grid">
+<section class="au-card"><h2>Novo usuário</h2>
+<form method="post" class="au-form">
+<label><span>Nome completo</span><input name="name" required></label>
+<label><span>E-mail</span><input type="email" name="email" required></label>
+<label><span>WhatsApp</span><input name="phone"></label>
+<label><span>Senha inicial</span><input type="password" name="password" minlength="6" required></label>
+<label><span>Confirmar senha</span><input type="password" name="confirm_password" minlength="6" required></label>
+<label><span>Tipo</span><select name="user_type"><option value="client">Cliente</option><option value="admin">Administrador</option></select></label>
+<label><span>Situação</span><select name="status"><option value="active">Ativo</option><option value="blocked">Bloqueado</option></select></label>
+<button class="au-btn au-primary" type="submit">+ Cadastrar</button>
+</form></section>
+
+<section class="au-card"><h2>Contas cadastradas</h2><div class="au-table-wrap"><table class="au-table"><thead><tr><th>Cliente</th><th>Telefone</th><th>Perfil</th><th>Situação</th><th>Ações</th></tr></thead><tbody>
+{% for user in users %}
+<tr>
+<td>
+<div class="au-client">
+  <div class="au-avatar">
+    {% if user.profile_photo_record %}
+      <img src="{{ url_for('profile_photo_file', user_id=user.id, v=user.profile_photo_record.updated_at.timestamp()) }}"
+           alt="Foto de {{ user.name }}">
+    {% else %}
+      {{ (user.name or 'U')[0]|upper }}
+    {% endif %}
+  </div>
+  <div class="au-client-copy">
+    <strong>{{ user.name }}</strong>
+    <small>{{ user.email }}</small>
+  </div>
+</div>
+</td>
+<td>{{ user.phone or "—" }}</td>
+<td>{{ "Administrador" if user.is_admin else "Cliente" }}</td>
+<td><span class="au-state {{ 'blocked' if user.is_blocked else 'active' }}">{{ "Bloqueado" if user.is_blocked else "Ativo" }}</span></td>
+<td><div class="au-actions">
+{% if not user.is_admin %}
+<a class="edit" href="{{ url_for('admin_user_detail', user_id=user.id) }}">Ver / editar</a>
+<form method="post" action="{{ url_for('toggle_user_block', user_id=user.id) }}"><button class="block" type="submit">{{ "Desbloquear" if user.is_blocked else "Bloquear" }}</button></form>
+<form method="post" action="{{ url_for('delete_user', user_id=user.id) }}" onsubmit="return confirm('Excluir definitivamente a conta de {{ user.name }}?');"><button class="delete" type="submit">Excluir</button></form>
+{% else %}<small>Conta administrativa</small>{% endif %}
+</div></td>
+</tr>
+{% else %}<tr><td colspan="5">Nenhum usuário cadastrado.</td></tr>{% endfor %}
+</tbody></table></div></section>
+</div></div></section>
+{% endblock %}

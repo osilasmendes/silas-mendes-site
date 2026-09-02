@@ -1,0 +1,199 @@
+{% extends "base.html" %}
+{% block title %}Solicitações | Administração{% endblock %}
+{% block content %}
+<style>
+.arq-page{min-height:calc(100vh - 150px);padding:45px 0 70px;background:#030b15;color:#f6f9ff}.arq-wrap{width:min(1240px,calc(100% - 34px));margin:auto}.arq-head{display:flex;justify-content:space-between;gap:20px;align-items:end;margin-bottom:20px}.arq-head span{color:#70adff;font-size:11px;font-weight:850;letter-spacing:.12em}.arq-head h1{margin:7px 0 5px;font-size:34px}.arq-head p{margin:0;color:#91a3ba}.arq-back{padding:11px 14px;border:1px solid #29405b;border-radius:9px;color:#dbe8f5;text-decoration:none;font-size:12px}.arq-stack{display:grid;gap:17px}.arq-card{border:1px solid #1c3048;border-radius:16px;background:linear-gradient(145deg,#091725,#05101c);padding:20px}.arq-card h2{margin:0 0 15px;font-size:20px}.arq-list{display:grid;gap:12px}.order{padding:16px;border:1px solid #193049;border-radius:12px;background:#06131f}.order-top{display:flex;justify-content:space-between;gap:14px;align-items:start}.order-title strong{font-size:14px}.order-title span{display:block;margin-top:4px;color:#7489a2;font-size:10px}.order p{color:#a4b4c6;font-size:12px;line-height:1.55}.order-meta{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}.order-meta span{padding:6px 8px;border-radius:7px;background:#081725;border:1px solid #1c314a;color:#a9bad0;font-size:10px}.order-form{margin-top:12px;padding-top:12px;border-top:1px solid #183049;display:grid;grid-template-columns:180px 180px 1fr auto;gap:8px;align-items:end}.order-form label,.payment-form label{display:grid;gap:5px}.order-form label>span,.payment-form label>span{font-size:9px;text-transform:uppercase;letter-spacing:.06em;color:#7489a2}.order-form select,.order-form input,.order-form textarea,.payment-form select,.payment-form input{width:100%;min-height:38px;padding:8px 10px;border:1px solid #29405b;border-radius:8px;background:#06121f;color:#fff;font:inherit}.order-form textarea{min-height:38px;resize:vertical}.order-form button,.payment-form button{min-height:38px;padding:0 12px;border:0;border-radius:8px;background:#1976ff;color:white;font-weight:850;cursor:pointer}.cancel-reason{display:none}.cancel-reason.show{display:grid}.cancel-box{margin-top:10px;padding:10px 12px;border-radius:9px;border-left:3px solid #ef4444;background:rgba(239,68,68,.07);color:#f0b8b8;font-size:11px}.empty{padding:25px;text-align:center;color:#71869e}.status{padding:6px 8px;border-radius:999px;font-size:10px;font-weight:850;background:#0b1d31;color:#8bbcff}
+.project-finance{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:13px}.finance-box{padding:11px;border:1px solid #1c344e;border-radius:10px;background:#071522}.finance-box span{display:block;color:#71869e;font-size:9px;text-transform:uppercase;letter-spacing:.07em}.finance-box strong{display:block;margin-top:4px;font-size:16px}.finance-box.received strong{color:#6ee7a1}.finance-box.pending strong{color:#fbbf24}.payment-area{margin-top:12px;padding:13px;border:1px solid rgba(25,118,255,.22);border-radius:11px;background:rgba(25,118,255,.045)}.payment-area h3{margin:0 0 9px;font-size:13px}.payment-form{display:grid;grid-template-columns:150px 170px 1fr auto;gap:8px;align-items:end}.payment-history{display:grid;gap:6px;margin-top:10px}.payment-row{display:flex;justify-content:space-between;gap:12px;padding:8px 9px;border-radius:8px;background:#06111d;border:1px solid #172b42;font-size:10px}.payment-row strong{color:#78e0a1}.payment-row small{color:#71869e}.finance-note{margin:7px 0 0!important;color:#71869e!important;font-size:10px!important}
+
+.history-card{
+    border-color:#302234;
+    background:linear-gradient(145deg,#100d16,#080c14);
+}
+.history-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:12px;
+    margin-bottom:14px;
+}
+.history-head h2{margin:0}
+.history-count{
+    min-width:30px;height:30px;display:grid;place-items:center;
+    padding:0 8px;border-radius:999px;
+    color:#fca5a5;background:rgba(239,68,68,.10);
+    border:1px solid rgba(239,68,68,.22);
+    font-size:11px;font-weight:850;
+}
+.history-order{
+    border-color:#35212b;
+    background:#0c0d13;
+    opacity:.96;
+}
+.history-order .status{
+    color:#fca5a5;
+    background:rgba(239,68,68,.09);
+}
+.history-order .cancel-box{margin-top:12px}
+.history-date{
+    color:#8d7d86!important;
+}
+
+@media(max-width:900px){.arq-head{align-items:flex-start;flex-direction:column}.order-form,.payment-form{grid-template-columns:1fr}.order-top{flex-direction:column}.project-finance{grid-template-columns:1fr}}
+</style>
+
+<section class="arq-page"><div class="arq-wrap">
+<header class="arq-head"><div><span>ADMINISTRAÇÃO</span><h1>Solicitações e ordens</h1><p>Atualize status, valores dos projetos, recebimentos e cancelamentos.</p></div><a class="arq-back" href="{{ url_for('admin_dashboard') }}">← Voltar ao painel</a></header>
+<div class="arq-stack">
+
+<section class="arq-card"><h2>Pedidos de serviço ativos · {{ requests_list|length }}</h2><div class="arq-list">
+{% for item in requests_list %}
+<article class="order">
+<div class="order-top"><div class="order-title"><strong>#{{ item.id }} · {{ item.service }}</strong><span>{{ item.customer.name }} · {{ item.customer.email }}</span></div><span class="status">{{ item.status }}</span></div>
+<p>{{ item.details }}</p>
+<div class="order-meta"><span>Valor: <strong>{{ format_brl(item.price_cents) }}</strong></span><span>Pagamento: <strong>{{ item.payment_method or "Não informado" }}</strong></span><span>Solicitado: {{ item.created_at.strftime('%d/%m/%Y às %H:%M') }}</span></div>
+{% if item.status == "Cancelada" and item.cancellation_reason %}<div class="cancel-box"><strong>Motivo do cancelamento:</strong> {{ item.cancellation_reason }}</div>{% endif %}
+<form method="post" action="{{ url_for('update_service_status', item_id=item.id) }}" class="order-form status-form">
+<label><span>Status</span><select name="status" class="status-select">{% for s in ['Recebida','Em andamento','Aguardando cliente','Concluída','Cancelada'] %}<option {% if item.status == s %}selected{% endif %}>{{ s }}</option>{% endfor %}</select></label>
+<label class="cancel-reason"><span>Motivo do cancelamento *</span><textarea name="cancellation_reason" placeholder="Ex.: Cliente desistiu">{{ item.cancellation_reason or '' }}</textarea></label>
+<div></div><button type="submit">Salvar</button>
+</form>
+</article>
+{% else %}<div class="empty">Nenhum atendimento recebido.</div>{% endfor %}
+</div></section>
+
+<section class="arq-card"><h2>Sites e sistemas ativos · {{ quotes|length }}</h2><div class="arq-list">
+{% for item in quotes %}
+<article class="order">
+<div class="order-top"><div class="order-title"><strong>#{{ item.id }} · {{ item.project_name or item.project_type }}</strong><span>{{ item.customer.name }} · {{ item.customer.email }}</span></div><span class="status">{{ item.status }}</span></div>
+<p>{{ item.description }}</p>
+<div class="order-meta"><span>Estimativa do cliente: {{ item.budget or "Não informada" }}</span><span>Solicitado: {{ item.created_at.strftime('%d/%m/%Y às %H:%M') }}</span></div>
+
+<div class="project-finance">
+<div class="finance-box"><span>Valor final</span><strong>{{ format_brl(item.final_price_cents) }}</strong></div>
+<div class="finance-box received"><span>Total recebido</span><strong>{{ format_brl(item.total_received_cents) }}</strong></div>
+<div class="finance-box pending"><span>Saldo a receber</span><strong>{{ format_brl(item.balance_due_cents) }}</strong></div>
+</div>
+
+{% if item.payments %}
+<div class="payment-history">
+{% for payment in item.payments|reverse %}
+<div class="payment-row"><div><strong>+ {{ format_brl(payment.amount_cents) }}</strong> · {{ payment.payment_method }}{% if payment.note %}<small> · {{ payment.note }}</small>{% endif %}</div><small>{{ payment.paid_at.strftime('%d/%m/%Y às %H:%M') }}</small></div>
+{% endfor %}
+</div>
+{% endif %}
+
+{% if item.final_price_cents and item.balance_due_cents and item.status != "Cancelada" %}
+<div class="payment-area">
+<h3>Registrar valor recebido</h3>
+<form method="post" action="{{ url_for('add_project_payment', item_id=item.id) }}" class="payment-form">
+<label><span>Valor recebido (R$)</span><input name="amount" required placeholder="Ex.: 500,00"></label>
+<label><span>Forma de pagamento</span><select name="payment_method" required><option value="">Selecione</option>{% for method in ['Pix','Cartão de crédito','Cartão de débito','Dinheiro','Transferência','Outro'] %}<option>{{ method }}</option>{% endfor %}</select></label>
+<label><span>Observação</span><input name="note" maxlength="250" placeholder="Ex.: Entrada / 1ª parcela / saldo"></label>
+<button type="submit">Registrar recebimento</button>
+</form>
+<p class="finance-note">O sistema soma os pagamentos e calcula automaticamente o saldo restante.</p>
+</div>
+{% elif item.final_price_cents and item.balance_due_cents == 0 %}
+<div class="payment-area"><h3 style="color:#6ee7a1">✓ Projeto totalmente pago</h3></div>
+{% endif %}
+
+{% if item.status == "Cancelada" and item.cancellation_reason %}<div class="cancel-box"><strong>Motivo do cancelamento:</strong> {{ item.cancellation_reason }}</div>{% endif %}
+
+<form method="post" action="{{ url_for('update_quote_status', item_id=item.id) }}" class="order-form status-form">
+<label><span>Status</span><select name="status" class="status-select">{% for s in ['Recebida','Em andamento','Proposta enviada','Aprovada','Concluída','Cancelada'] %}<option {% if item.status == s %}selected{% endif %}>{{ s }}</option>{% endfor %}</select></label>
+<label><span>Valor final (R$)</span><input name="final_price" value="{% if item.final_price_cents is not none %}{{ '%.2f'|format(item.final_price_cents/100)|replace('.', ',') }}{% endif %}" placeholder="Ex.: 1.500,00"></label>
+<label class="cancel-reason"><span>Motivo do cancelamento *</span><textarea name="cancellation_reason" placeholder="Ex.: Projeto não aprovado">{{ item.cancellation_reason or '' }}</textarea></label>
+<button type="submit">Salvar</button>
+</form>
+</article>
+{% else %}<div class="empty">Nenhum orçamento recebido.</div>{% endfor %}
+</div></section>
+
+
+<section class="arq-card history-card">
+  <div class="history-head">
+    <h2>Histórico de pedidos cancelados</h2>
+    <span class="history-count">{{ cancelled_requests|length + cancelled_quotes|length }}</span>
+  </div>
+
+  <div class="arq-list">
+    {% for item in cancelled_requests %}
+    <article class="order history-order">
+      <div class="order-top">
+        <div class="order-title">
+          <strong>#{{ item.id }} · {{ item.service }}</strong>
+          <span>{{ item.customer.name }} · {{ item.customer.email }}</span>
+        </div>
+        <span class="status">Cancelada</span>
+      </div>
+
+      <p>{{ item.details }}</p>
+
+      <div class="order-meta">
+        <span>Tipo: <strong>Serviço</strong></span>
+        <span>Valor: <strong>{{ format_brl(item.price_cents) }}</strong></span>
+        <span class="history-date">
+          Cancelado em:
+          {{ (item.cancelled_at or item.updated_at or item.created_at).strftime('%d/%m/%Y às %H:%M') }}
+        </span>
+      </div>
+
+      <div class="cancel-box">
+        <strong>Motivo do cancelamento:</strong>
+        {{ item.cancellation_reason or "Motivo não informado" }}
+      </div>
+    </article>
+    {% endfor %}
+
+    {% for item in cancelled_quotes %}
+    <article class="order history-order">
+      <div class="order-top">
+        <div class="order-title">
+          <strong>#{{ item.id }} · {{ item.project_name or item.project_type }}</strong>
+          <span>{{ item.customer.name }} · {{ item.customer.email }}</span>
+        </div>
+        <span class="status">Cancelada</span>
+      </div>
+
+      <p>{{ item.description }}</p>
+
+      <div class="order-meta">
+        <span>Tipo: <strong>Site / Sistema</strong></span>
+        <span>Valor final: <strong>{{ format_brl(item.final_price_cents) }}</strong></span>
+        <span>Recebido: <strong>{{ format_brl(item.total_received_cents) }}</strong></span>
+        <span class="history-date">
+          Cancelado em:
+          {{ (item.cancelled_at or item.updated_at or item.created_at).strftime('%d/%m/%Y às %H:%M') }}
+        </span>
+      </div>
+
+      <div class="cancel-box">
+        <strong>Motivo do cancelamento:</strong>
+        {{ item.cancellation_reason or "Motivo não informado" }}
+      </div>
+    </article>
+    {% endfor %}
+
+    {% if not cancelled_requests and not cancelled_quotes %}
+    <div class="empty">Nenhum pedido cancelado no histórico.</div>
+    {% endif %}
+  </div>
+</section>
+
+</div></div></section>
+<script>
+document.addEventListener("DOMContentLoaded",()=>{
+  document.querySelectorAll(".status-form").forEach(form=>{
+    const select=form.querySelector(".status-select");
+    const box=form.querySelector(".cancel-reason");
+    function update(){
+      if(!box)return;
+      box.classList.toggle("show",select.value==="Cancelada");
+      const field=box.querySelector("[name='cancellation_reason']");
+      if(field) field.required=(select.value==="Cancelada");
+    }
+    select.addEventListener("change",update); update();
+  });
+});
+</script>
+{% endblock %}

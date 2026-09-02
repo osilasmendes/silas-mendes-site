@@ -1,0 +1,191 @@
+{% extends "base.html" %}
+{% block title %}Preços dos serviços | Administração{% endblock %}
+
+{% block content %}
+<style>
+.price-page{
+    min-height:calc(100vh - 150px);
+    padding:48px 0 76px;
+    background:#030b15;
+    color:#f6f9ff;
+}
+.price-wrap{
+    width:min(920px,calc(100% - 36px));
+    margin:auto;
+}
+.price-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:end;
+    gap:20px;
+    margin-bottom:22px;
+}
+.price-head span{
+    color:#70adff;
+    font-size:10px;
+    font-weight:850;
+    letter-spacing:.13em;
+}
+.price-head h1{
+    margin:7px 0 6px;
+    font-size:34px;
+}
+.price-head p{
+    margin:0;
+    color:#91a3ba;
+    font-size:13px;
+}
+.price-back{
+    padding:10px 13px;
+    border:1px solid #29405b;
+    border-radius:9px;
+    color:#dbe8f5;
+    text-decoration:none;
+    font-size:11px;
+}
+.price-card{
+    border:1px solid #1c3048;
+    border-radius:17px;
+    background:linear-gradient(145deg,#091725,#05101c);
+    overflow:hidden;
+}
+.price-row{
+    display:grid;
+    grid-template-columns:1fr 190px;
+    gap:18px;
+    align-items:center;
+    padding:17px 19px;
+    border-bottom:1px solid #172b41;
+}
+.price-row:last-child{
+    border-bottom:0;
+}
+.price-service strong{
+    display:block;
+    font-size:13px;
+}
+.price-service small{
+    display:block;
+    margin-top:4px;
+    color:#71869e;
+    font-size:10px;
+}
+.price-input{
+    position:relative;
+}
+.price-input span{
+    position:absolute;
+    left:12px;
+    top:50%;
+    transform:translateY(-50%);
+    color:#71869e;
+    font-size:11px;
+}
+.price-input input{
+    width:100%;
+    height:42px;
+    padding:0 12px 0 34px;
+    border:1px solid #29405b;
+    border-radius:9px;
+    background:#06121f;
+    color:#fff;
+    font:inherit;
+    font-size:12px;
+}
+.price-input input:focus{
+    outline:none;
+    border-color:#1976ff;
+    box-shadow:0 0 0 3px rgba(25,118,255,.10);
+}
+.price-footer{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:20px;
+    margin-top:14px;
+    padding:15px 17px;
+    border:1px solid #1c3048;
+    border-radius:13px;
+    background:#071421;
+}
+.price-footer p{
+    margin:0;
+    color:#758ba3;
+    font-size:10px;
+    line-height:1.5;
+}
+.price-save{
+    min-width:160px;
+    height:42px;
+    border:0;
+    border-radius:9px;
+    background:#1976ff;
+    color:#fff;
+    font-weight:850;
+    cursor:pointer;
+}
+.price-info{
+    margin-top:15px;
+    padding:13px 15px;
+    border:1px solid rgba(25,118,255,.20);
+    border-radius:11px;
+    background:rgba(25,118,255,.05);
+    color:#8fa5bd;
+    font-size:11px;
+    line-height:1.6;
+}
+.price-info strong{color:#dce9f7}
+@media(max-width:650px){
+    .price-head{align-items:flex-start;flex-direction:column}
+    .price-row{grid-template-columns:1fr}
+    .price-footer{align-items:stretch;flex-direction:column}
+    .price-save{width:100%}
+}
+</style>
+
+<section class="price-page">
+    <div class="price-wrap">
+        <header class="price-head">
+            <div>
+                <span>ADMINISTRAÇÃO · SERVIÇOS</span>
+                <h1>Preços dos serviços</h1>
+                <p>Altere os valores cobrados sem precisar editar o código do site. O novo valor será exibido automaticamente para os clientes.</p>
+            </div>
+            <a class="price-back" href="{{ url_for('admin_dashboard') }}">← Voltar ao painel</a>
+        </header>
+
+        <form method="post">
+            <div class="price-card">
+                {% for row in price_rows %}
+                <div class="price-row">
+                    <div class="price-service">
+                        <strong>{{ row.service }}</strong>
+                        <small>Valor atual: {{ format_brl(row.price_cents) }}</small>
+                    </div>
+
+                    <div class="price-input">
+                        <span>R$</span>
+                        <input
+                            type="text"
+                            name="price_{{ row.index }}"
+                            inputmode="decimal"
+                            required
+                            value="{{ '%.2f'|format(row.price_cents / 100)|replace('.', ',') }}"
+                            placeholder="0,00">
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="price-footer">
+                <p>Os novos preços serão usados somente nas <strong>novas solicitações</strong>. Pedidos já existentes continuam com o valor registrado no momento da contratação.</p>
+                <button class="price-save" type="submit">Salvar novos preços</button>
+            </div>
+        </form>
+
+        <div class="price-info">
+            <strong>Importante:</strong> a criação de sites e sistemas continua funcionando por orçamento personalizado, portanto não possui preço fixo nesta tela.
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Silas Mendes Desenvolvedor — sites, sistemas, suporte e soluções digitais.">
+    <title>{% block title %}Silas Mendes Desenvolvedor{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="dark-site">
+<header class="site-header dark-header">
+    <div class="container nav-wrap">
+        <a class="brand dark-brand" href="{{ url_for('index') }}">
+            <span class="brand-code">&lt;/&gt;</span>
+            <span class="brand-copy">Silas Mendes<small>Desenvolvedor</small></span>
+        </a>
+        <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu">☰</button>
+        <nav id="mainNav">
+            <a href="{{ url_for('index') }}#inicio">Início</a>
+            <a href="{{ url_for('index') }}#sobre">Sobre</a>
+            <a href="{{ url_for('index') }}#projetos">Portfólio</a>
+            <a href="{{ url_for('index') }}#servicos">Serviços</a>
+            <a href="{{ url_for('index') }}#depoimentos">Depoimentos</a>
+            <a href="{{ url_for('index') }}#contato">Contato</a>
+            {% if current_user.is_authenticated %}
+                {% if current_user.is_admin %}
+                    <a href="{{ url_for('admin_dashboard') }}">Administração</a>
+                {% else %}
+                    <a href="{{ url_for('client_dashboard') }}">Minha conta</a>
+                {% endif %}
+                <a class="nav-outline" href="{{ url_for('logout') }}">Sair</a>
+                <a class="nav-cta" href="{{ url_for('request_choice') }}"><span>▣</span> Agendar atendimento</a>
+            {% else %}
+                <a class="nav-outline" href="{{ url_for('login') }}"><span>♙</span> Entrar</a>
+                <a class="nav-cta" href="{{ url_for('request_choice') }}"><span>▣</span> Agendar atendimento</a>
+            {% endif %}
+        </nav>
+    </div>
+</header>
+
+<main>
+    <div class="flash-wrap container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% for category, message in messages %}
+                <div class="flash {{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endwith %}
+    </div>
+    {% block content %}{% endblock %}
+</main>
+
+<footer class="footer dark-footer" id="contato">
+    <style>
+        .legal-footer-links{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+        .legal-footer-links a{color:#8fa3bb;text-decoration:none;font-size:12px}
+        .legal-footer-links a:hover{color:#62a5ff}
+        @media(max-width:700px){.footer-bar{gap:14px}.legal-footer-links{width:100%}}
+    </style>
+    <div class="container footer-bar">
+        <p>© {{ current_year }} Silas Mendes Desenvolvedor. Todos os direitos reservados.</p>
+        <div class="legal-footer-links" aria-label="Privacidade e termos">
+            <a href="{{ url_for('privacy_policy') }}">Política de Privacidade</a>
+            <a href="{{ url_for('terms_of_use') }}">Termos de Uso</a>
+            <a href="{{ url_for('privacy_policy') }}#direitos">Proteção de Dados</a>
+        </div>
+        <p>Feito com <span class="heart">♥</span> e código</p>
+    </div>
+</footer>
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,316 @@
+{% extends "base.html" %}
+{% block title %}Criar conta | Silas Mendes Desenvolvedor{% endblock %}
+
+{% block content %}
+<style>
+.register-page{
+    min-height:calc(100vh - 147px);
+    padding:64px 0 72px;
+    background:
+        radial-gradient(circle at 78% 20%, rgba(19,118,255,.13), transparent 30%),
+        radial-gradient(circle at 18% 80%, rgba(19,118,255,.07), transparent 28%),
+        #020810;
+}
+.register-shell{
+    width:min(1120px, calc(100% - 48px));
+    margin:0 auto;
+    display:grid;
+    grid-template-columns:.82fr 1.18fr;
+    overflow:hidden;
+    border:1px solid #1d2c3e;
+    border-radius:22px;
+    background:#07111c;
+    box-shadow:0 30px 80px rgba(0,0,0,.38);
+}
+.register-info{
+    position:relative;
+    padding:54px 48px;
+    background:linear-gradient(145deg,#08192b 0%,#07111c 72%);
+    border-right:1px solid #1c2b3c;
+    overflow:hidden;
+}
+.register-info:after{
+    content:"";
+    position:absolute;
+    width:360px;height:360px;
+    border:1px solid rgba(30,127,255,.25);
+    border-radius:50%;
+    right:-210px;bottom:-170px;
+    box-shadow:0 0 55px rgba(19,118,255,.13);
+}
+.register-badge{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:7px 12px;
+    border-radius:999px;
+    color:#3792ff;
+    background:#09254a;
+    font-size:12px;
+    font-weight:700;
+    letter-spacing:.02em;
+}
+.register-info h1{
+    margin:22px 0 15px;
+    font-size:42px;
+    line-height:1.08;
+    letter-spacing:-1.8px;
+}
+.register-info h1 span{color:#1f7eff}
+.register-info>p{
+    margin:0;
+    color:#aebccd;
+    font-size:14px;
+    line-height:1.8;
+}
+.register-benefits{
+    display:grid;
+    gap:14px;
+    margin-top:34px;
+}
+.register-benefit{
+    display:flex;
+    gap:12px;
+    align-items:flex-start;
+    color:#c9d4df;
+    font-size:13px;
+}
+.register-benefit i{
+    flex:0 0 24px;
+    width:24px;height:24px;
+    display:grid;
+    place-items:center;
+    border-radius:50%;
+    background:#0d68e9;
+    color:#fff;
+    font-style:normal;
+    font-size:11px;
+    margin-top:1px;
+}
+.register-form-panel{padding:48px 52px 44px;background:#07111c}
+.register-eyebrow{
+    color:#2888ff;
+    font-size:11px;
+    font-weight:800;
+    letter-spacing:.13em;
+    text-transform:uppercase;
+}
+.register-form-panel h2{
+    margin:8px 0 7px;
+    font-size:30px;
+    letter-spacing:-.8px;
+}
+.register-subtitle{margin:0 0 28px;color:#95a5b8;font-size:13px}
+.register-form{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px;
+}
+.register-field{display:flex;flex-direction:column;gap:8px}
+.register-field.full{grid-column:1/-1}
+.register-field label{
+    color:#dfe7f0;
+    font-size:12px;
+    font-weight:700;
+}
+.register-field input{
+    width:100%;
+    height:48px;
+    padding:0 14px;
+    border:1px solid #25364a;
+    border-radius:9px;
+    outline:none;
+    background:#0a1623;
+    color:#f7faff;
+    font:inherit;
+    font-size:13px;
+    transition:border-color .2s, box-shadow .2s, background .2s;
+}
+.register-field input::placeholder{color:#64758a}
+.register-field input:focus{
+    border-color:#1978ff;
+    background:#0b1928;
+    box-shadow:0 0 0 3px rgba(25,120,255,.12);
+}
+.register-password-wrap{position:relative}
+.register-password-wrap input{padding-right:44px}
+.password-toggle{
+    position:absolute;
+    top:50%;right:9px;
+    transform:translateY(-50%);
+    width:32px;height:32px;
+    padding:0;
+    border:0;
+    background:transparent;
+    color:#8fa0b4;
+    cursor:pointer;
+    font-size:15px;
+}
+.register-submit{
+    grid-column:1/-1;
+    min-height:50px;
+    margin-top:3px;
+    border:0;
+    border-radius:9px;
+    background:linear-gradient(135deg,#1376ff,#2867ed);
+    color:#fff;
+    font:inherit;
+    font-size:14px;
+    font-weight:800;
+    cursor:pointer;
+    box-shadow:0 12px 30px rgba(19,118,255,.22);
+    transition:transform .2s, box-shadow .2s;
+}
+.register-submit:hover{transform:translateY(-1px);box-shadow:0 16px 36px rgba(19,118,255,.29)}
+.register-login{
+    margin-top:23px;
+    padding-top:21px;
+    border-top:1px solid #1d2b3b;
+    text-align:center;
+    color:#8f9fb2;
+    font-size:12px;
+}
+.register-login a{color:#2a88ff;font-weight:800}
+
+.register-consents{
+    grid-column:1/-1;
+    display:grid;
+    gap:10px;
+    margin-top:2px;
+}
+.register-consent{
+    display:flex;
+    align-items:flex-start;
+    gap:10px;
+    padding:12px 13px;
+    border:1px solid #20334a;
+    border-radius:10px;
+    background:#081522;
+    color:#9fb0c4;
+    font-size:11.5px;
+    line-height:1.55;
+}
+.register-consent input{
+    width:16px;
+    height:16px;
+    flex:0 0 16px;
+    margin-top:2px;
+    accent-color:#1978ff;
+}
+.register-consent a{color:#4e9aff;font-weight:800;text-decoration:none}
+.register-consent a:hover{text-decoration:underline}
+
+.register-note{
+    grid-column:1/-1;
+    display:flex;
+    gap:8px;
+    align-items:flex-start;
+    color:#708196;
+    font-size:10.5px;
+    line-height:1.55;
+    margin-top:-4px;
+}
+@media(max-width:880px){
+    .register-page{padding:30px 0 45px}
+    .register-shell{grid-template-columns:1fr;width:min(680px,calc(100% - 28px))}
+    .register-info{border-right:0;border-bottom:1px solid #1c2b3c;padding:38px 34px}
+    .register-info h1{font-size:34px}
+    .register-form-panel{padding:38px 34px}
+}
+@media(max-width:560px){
+    .register-form{grid-template-columns:1fr}
+    .register-field.full,.register-submit,.register-note{grid-column:auto}
+    .register-info,.register-form-panel{padding:30px 22px}
+    .register-info h1{font-size:31px}
+    .register-shell{width:calc(100% - 20px);border-radius:16px}
+}
+</style>
+
+<section class="register-page">
+    <div class="register-shell">
+        <aside class="register-info">
+            <span class="register-badge">✦ Área do cliente</span>
+            <h1>Sua conta para cuidar de tudo em <span>um só lugar.</span></h1>
+            <p>Cadastre-se gratuitamente para solicitar serviços, pedir orçamentos e acompanhar cada etapa dos seus pedidos.</p>
+
+            <div class="register-benefits">
+                <div class="register-benefit"><i>✓</i><span>Acompanhe o status dos seus atendimentos.</span></div>
+                <div class="register-benefit"><i>✓</i><span>Solicite orçamentos para sites e sistemas.</span></div>
+                <div class="register-benefit"><i>✓</i><span>Mantenha seus pedidos organizados na sua conta.</span></div>
+                <div class="register-benefit"><i>✓</i><span>Envie solicitações diretamente pelo WhatsApp.</span></div>
+            </div>
+        </aside>
+
+        <div class="register-form-panel">
+            <span class="register-eyebrow">Novo cliente</span>
+            <h2>Crie sua conta</h2>
+            <p class="register-subtitle">Preencha seus dados abaixo. Leva menos de um minuto.</p>
+
+            <form method="post" class="register-form" autocomplete="on">
+                <div class="register-field full">
+                    <label for="name">Nome completo</label>
+                    <input id="name" name="name" type="text" placeholder="Digite seu nome completo" autocomplete="name" required>
+                </div>
+
+                <div class="register-field">
+                    <label for="phone">WhatsApp</label>
+                    <input id="phone" name="phone" type="tel" placeholder="(81) 99999-9999" autocomplete="tel">
+                </div>
+
+                <div class="register-field">
+                    <label for="email">E-mail</label>
+                    <input id="email" name="email" type="email" placeholder="voce@email.com" autocomplete="email" required>
+                </div>
+
+                <div class="register-field">
+                    <label for="password">Senha</label>
+                    <div class="register-password-wrap">
+                        <input id="password" name="password" type="password" placeholder="Mínimo de 6 caracteres" minlength="6" autocomplete="new-password" required>
+                        <button class="password-toggle" type="button" data-password-target="password" aria-label="Mostrar senha">◉</button>
+                    </div>
+                </div>
+
+                <div class="register-field">
+                    <label for="confirm_password">Confirmar senha</label>
+                    <div class="register-password-wrap">
+                        <input id="confirm_password" name="confirm_password" type="password" placeholder="Digite a senha novamente" minlength="6" autocomplete="new-password" required>
+                        <button class="password-toggle" type="button" data-password-target="confirm_password" aria-label="Mostrar senha">◉</button>
+                    </div>
+                </div>
+
+                <div class="register-note">
+                    <span>●</span>
+                    <span>Usamos seus dados para criar e proteger sua conta, registrar solicitações, realizar contato e permitir o acompanhamento dos serviços. O site não armazena dados completos de cartão.</span>
+                </div>
+
+                <div class="register-consents">
+                    <label class="register-consent">
+                        <input type="checkbox" name="accept_privacy" value="yes" required>
+                        <span>Li e concordo com a <a href="{{ url_for('privacy_policy') }}" target="_blank" rel="noopener">Política de Privacidade e Proteção de Dados</a>.</span>
+                    </label>
+                    <label class="register-consent">
+                        <input type="checkbox" name="accept_terms" value="yes" required>
+                        <span>Li e concordo com os <a href="{{ url_for('terms_of_use') }}" target="_blank" rel="noopener">Termos de Uso</a> da plataforma.</span>
+                    </label>
+                </div>
+
+                <button class="register-submit" type="submit">Criar minha conta →</button>
+            </form>
+
+            <div class="register-login">Já possui cadastro? <a href="{{ url_for('login') }}">Entrar na minha conta</a></div>
+        </div>
+    </div>
+</section>
+
+<script>
+document.querySelectorAll('[data-password-target]').forEach(function(button){
+    button.addEventListener('click', function(){
+        var input = document.getElementById(button.dataset.passwordTarget);
+        var showing = input.type === 'text';
+        input.type = showing ? 'password' : 'text';
+        button.textContent = showing ? '◉' : '◌';
+        button.setAttribute('aria-label', showing ? 'Mostrar senha' : 'Ocultar senha');
+    });
+});
+</script>
+{% endblock %}

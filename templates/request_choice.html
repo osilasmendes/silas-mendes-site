@@ -1,0 +1,243 @@
+{% extends "base.html" %}
+{% block title %}Escolha sua solicitação | Silas Mendes Desenvolvedor{% endblock %}
+
+{% block content %}
+<style>
+.request-choice-page{
+    min-height:calc(100vh - 150px);
+    display:flex;
+    align-items:center;
+    padding:64px 0 80px;
+    background:
+        radial-gradient(circle at 18% 10%, rgba(19,118,255,.12), transparent 28%),
+        radial-gradient(circle at 82% 15%, rgba(139,92,246,.10), transparent 28%),
+        #020810;
+    color:#f6f9ff;
+}
+.request-choice-wrap{
+    width:min(980px, calc(100% - 36px));
+    margin:auto;
+}
+.request-choice-back{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    margin-bottom:28px;
+    color:#8296ad;
+    font-size:12px;
+    text-decoration:none;
+}
+.request-choice-back:hover{color:#fff}
+.request-choice-head{
+    max-width:720px;
+    margin:0 auto 30px;
+    text-align:center;
+}
+.request-choice-head .eyebrow{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    color:#75afff;
+    font-size:10px;
+    font-weight:850;
+    letter-spacing:.14em;
+}
+.request-choice-head .eyebrow i{
+    width:7px;height:7px;border-radius:50%;background:#1976ff;
+    box-shadow:0 0 16px rgba(25,118,255,.8);
+}
+.request-choice-head h1{
+    margin:11px 0 10px;
+    font-size:clamp(30px,5vw,48px);
+    line-height:1.08;
+}
+.request-choice-head p{
+    margin:0;
+    color:#91a4ba;
+    font-size:15px;
+    line-height:1.65;
+}
+.request-choice-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px;
+}
+.request-option{
+    position:relative;
+    min-height:360px;
+    display:flex;
+    flex-direction:column;
+    padding:27px;
+    border-radius:20px;
+    text-decoration:none;
+    color:#f6f9ff;
+    overflow:hidden;
+    transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease;
+}
+.request-option:hover{transform:translateY(-4px)}
+.request-option.support{
+    border:1px solid rgba(25,118,255,.34);
+    background:
+        radial-gradient(circle at 90% 5%,rgba(25,118,255,.17),transparent 35%),
+        linear-gradient(145deg,#091b2c,#06111d);
+}
+.request-option.support:hover{
+    border-color:#2d82ff;
+    box-shadow:0 20px 50px rgba(25,118,255,.13);
+}
+.request-option.project{
+    border:1px solid rgba(139,92,246,.34);
+    background:
+        radial-gradient(circle at 90% 5%,rgba(139,92,246,.17),transparent 35%),
+        linear-gradient(145deg,#141224,#07101c);
+}
+.request-option.project:hover{
+    border-color:#976cff;
+    box-shadow:0 20px 50px rgba(139,92,246,.13);
+}
+.option-icon{
+    width:60px;height:60px;
+    display:grid;place-items:center;
+    border-radius:16px;
+    margin-bottom:22px;
+    font-size:22px;
+    font-weight:900;
+}
+.support .option-icon{
+    color:#9bc7ff;background:rgba(25,118,255,.13);
+    border:1px solid rgba(25,118,255,.25);
+}
+.project .option-icon{
+    color:#ceb8ff;background:rgba(139,92,246,.13);
+    border:1px solid rgba(139,92,246,.25);
+}
+.option-type{
+    display:block;
+    margin-bottom:8px;
+    font-size:10px;
+    font-weight:850;
+    letter-spacing:.13em;
+}
+.support .option-type{color:#79b6ff}
+.project .option-type{color:#bea2ff}
+.request-option h2{
+    margin:0 0 10px;
+    font-size:25px;
+    line-height:1.2;
+}
+.request-option>p{
+    margin:0 0 18px;
+    color:#94a6ba;
+    font-size:13px;
+    line-height:1.6;
+}
+.option-examples{
+    display:flex;
+    flex-wrap:wrap;
+    gap:7px;
+    margin-bottom:24px;
+}
+.option-examples span{
+    padding:6px 9px;
+    border:1px solid #20354d;
+    border-radius:999px;
+    background:rgba(3,12,22,.55);
+    color:#a2b3c6;
+    font-size:10px;
+}
+.option-button{
+    margin-top:auto;
+    min-height:46px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 14px;
+    border-radius:10px;
+    font-size:12px;
+    font-weight:850;
+}
+.support .option-button{
+    background:#1976ff;color:#fff;
+}
+.project .option-button{
+    background:#7c4ee8;color:#fff;
+}
+.request-choice-note{
+    max-width:760px;
+    margin:20px auto 0;
+    text-align:center;
+    color:#74889f;
+    font-size:11px;
+    line-height:1.55;
+}
+.request-choice-note strong{color:#cbd8e6}
+@media(max-width:760px){
+    .request-choice-page{padding:42px 0 60px;align-items:flex-start}
+    .request-choice-grid{grid-template-columns:1fr}
+    .request-option{min-height:320px}
+}
+</style>
+
+<section class="request-choice-page">
+    <div class="request-choice-wrap">
+        <a class="request-choice-back"
+           href="{{ url_for('client_dashboard') if current_user.is_authenticated and not current_user.is_admin else url_for('index') }}">
+            ← Voltar
+        </a>
+
+        <header class="request-choice-head">
+            <span class="eyebrow"><i></i> NOVA SOLICITAÇÃO</span>
+            <h1>Escolha o tipo da solicitação</h1>
+            <p>Selecione uma das opções abaixo para continuar. Cada tipo possui um processo diferente.</p>
+        </header>
+
+        <div class="request-choice-grid">
+            <a class="request-option support" href="{{ url_for('service_request') }}">
+                <div class="option-icon">🛠</div>
+                <span class="option-type">SERVIÇO TÉCNICO</span>
+                <h2>Solicitar um serviço técnico</h2>
+                <p>Escolha esta opção quando precisar resolver um problema, realizar manutenção ou contratar um serviço de informática.</p>
+
+                <div class="option-examples">
+                    <span>Suporte remoto</span>
+                    <span>Suporte presencial</span>
+                    <span>Formatação</span>
+                    <span>Instalação</span>
+                    <span>Currículo</span>
+                    <span>Documentos</span>
+                </div>
+
+                <span class="option-button">
+                    Continuar para serviço técnico
+                    <b>→</b>
+                </span>
+            </a>
+
+            <a class="request-option project" href="{{ url_for('quote_request') }}">
+                <div class="option-icon">&lt;/&gt;</div>
+                <span class="option-type">SITE OU SISTEMA</span>
+                <h2>Criar um site ou sistema</h2>
+                <p>Escolha esta opção quando quiser desenvolver um projeto digital novo e receber um orçamento personalizado.</p>
+
+                <div class="option-examples">
+                    <span>Site profissional</span>
+                    <span>Landing page</span>
+                    <span>Sistema web</span>
+                    <span>Painel administrativo</span>
+                    <span>Automação</span>
+                </div>
+
+                <span class="option-button">
+                    Continuar para orçamento
+                    <b>→</b>
+                </span>
+            </a>
+        </div>
+
+        <p class="request-choice-note">
+            <strong>Dica:</strong> se você precisa consertar, configurar ou realizar um serviço, escolha
+            <strong>Serviço técnico</strong>. Se quer desenvolver algo novo, escolha <strong>Site ou sistema</strong>.
+        </p>
+    </div>
+</section>
+{% endblock %}

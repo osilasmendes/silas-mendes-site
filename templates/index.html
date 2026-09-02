@@ -1,0 +1,694 @@
+{% extends "base.html" %}
+{% block title %}Silas Mendes Desenvolvedor | Sites e Sistemas{% endblock %}
+{% block content %}
+<div class="portfolio-home">
+<section class="dev-hero" id="inicio">
+    <div class="orbit orbit-one"></div>
+    <div class="orbit orbit-two"></div>
+    <div class="container dev-hero-grid">
+        <div class="dev-hero-copy reveal">
+            <span class="dev-pill">Desenvolvedor Full Stack</span>
+            <h1>Transformo ideias<br>em <span>soluções digitais</span></h1>
+            <p>Desenvolvimento de sites, sistemas web e soluções personalizadas com foco em performance, segurança e experiência do usuário.</p>
+            <div class="hero-actions">
+                <a class="btn dev-primary" href="#projetos">Ver meus projetos <b>→</b></a>
+                <a class="btn dev-secondary" href="{{ url_for('quote_request') if current_user.is_authenticated else url_for('register') }}">▧ Solicitar orçamento</a>
+            </div>
+            <div class="hero-check"><span>✓</span> Soluções modernas e personalizadas para o seu negócio</div>
+        </div>
+
+        <div class="project-collage reveal delay-1" aria-label="Projetos em destaque">
+            <figure class="mockup mockup-laura-home">
+                <img src="{{ url_for('static', filename='img/laura-home.png') }}" alt="Projeto Laura Designer">
+            </figure>
+            <figure class="mockup mockup-laura-login">
+                <img src="{{ url_for('static', filename='img/laura-login.png') }}" alt="Tela de login Laura Designer">
+            </figure>
+
+            <div class="buscartag-window mockup-buscartag" aria-label="Prévia visual do BuscarTag">
+                <aside class="bt-sidebar">
+                    <strong>BuscarTAG</strong>
+                    <a class="active">⌂ <span>Início</span></a>
+                    <a>⌕ <span>Buscar</span></a>
+                    <a>▦ <span>Categorias</span></a>
+                    <a>☆ <span>Favoritos</span></a>
+                    <a>◷ <span>Recentes</span></a>
+                    <a>▤ <span>Relatórios</span></a>
+                    <a>⚙ <span>Configurações</span></a>
+                </aside>
+                <div class="bt-main">
+                    <div class="bt-search">Pesquisar TAG ou assunto...</div>
+                    <div class="bt-columns">
+                        <div class="bt-result">
+                            <small>TAG sugerida</small>
+                            <p>Complaints against passenger &gt; Driver behavior</p>
+                            <span>Confiança: <b>98%</b></span>
+                            <button>Ver detalhes</button>
+                        </div>
+                        <div class="bt-most-used">
+                            <small>Tags mais usadas</small>
+                            <div><span>Complaints against passenger</span><b>2.450</b></div>
+                            <div><span>Payment issue</span><b>1.820</b></div>
+                            <div><span>Driver behavior</span><b>1.230</b></div>
+                            <div><span>Account update</span><b>980</b></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-dots"><i></i><i></i><i></i></div>
+        </div>
+    </div>
+</section>
+
+<section class="dev-section">
+    <div class="container">
+        <div class="portfolio-heading reveal">
+            <div>
+                <span class="portfolio-kicker"><i></i> PORTFÓLIO</span>
+                <h2>Projetos e trabalhos</h2>
+            </div>
+            <p>Alguns projetos que desenvolvi com dedicação e tecnologias modernas para entregar resultados reais.</p>
+            <a class="btn dev-secondary compact" href="#projetos">▦ Ver todos os projetos</a>
+        </div>
+
+        <div class="dev-project-grid">
+            <article class="dev-project-card blue-project reveal">
+                <div class="dev-project-image bt-mini-wrap">
+                    <div class="buscartag-mini">
+                        <aside>
+                            <strong>BuscarTAG</strong>
+                            <i class="on">Início</i><i>Buscar</i><i>Categorias</i><i>Favoritos</i><i>Recentes</i>
+                        </aside>
+                        <section>
+                            <div class="mini-search">Pesquisar TAG ou assunto...</div>
+                            <small>TAG sugerida</small>
+                            <p>Complaints against passenger &gt; Driver behavior</p>
+                            <b>Confiança: 98%</b>
+                            <button>Ver detalhes</button>
+                        </section>
+                    </div>
+                </div>
+                <div class="dev-project-content">
+                    <div class="project-title-line"><h3>BuscarTag</h3><span>Sistema Web</span></div>
+                    <p>Plataforma interna desenvolvida para facilitar a busca e classificação de TAGs de atendimento, aumentando a agilidade e reduzindo erros operacionais.</p>
+                    <div class="tech-list"><span>HTML</span><span>CSS</span><span>JavaScript</span><span>Python</span><span>Flask</span><span>SQLite</span></div>
+                    <a href="#">Ver detalhes <b>→</b></a>
+                </div>
+            </article>
+
+            <article class="dev-project-card pink-project reveal delay-1">
+                <div class="dev-project-image laura-project-preview">
+                    <img src="{{ url_for('static', filename='img/laura-login.png') }}" alt="Laura Nails Designer">
+                </div>
+                <div class="dev-project-content">
+                    <div class="project-title-line"><h3>Laura Nails Designer</h3><span>Site Institucional</span></div>
+                    <p>Site institucional para profissional de beleza com apresentação de trabalhos, agendamento online, cadastro de clientes e painel administrativo.</p>
+                    <div class="tech-list"><span>HTML</span><span>CSS</span><span>JavaScript</span><span>Flask</span><span>SQLite</span></div>
+                    <a href="https://laura-nails-v2.onrender.com/" target="_blank" rel="noopener noreferrer">Abrir site <b>→</b></a>
+                </div>
+            </article>
+        </div>
+    </div>
+</section>
+
+
+{% if current_user.is_authenticated %}
+<section class="pricing-section" id="servicos">
+    <style>
+        .pricing-section{
+            padding:72px 0;
+            background:
+                radial-gradient(circle at 10% 15%, rgba(25,118,255,.12), transparent 28%),
+                #030b15;
+            color:#f5f8ff;
+        }
+        .pricing-section *{box-sizing:border-box}
+        .pricing-head{
+            display:flex;justify-content:space-between;align-items:end;
+            gap:28px;margin-bottom:30px;
+        }
+        .pricing-kicker{
+            display:inline-flex;align-items:center;gap:8px;
+            color:#69aaff;font-size:12px;font-weight:800;letter-spacing:.12em;
+        }
+        .pricing-kicker i{width:8px;height:8px;border-radius:50%;background:#1976ff;box-shadow:0 0 16px rgba(25,118,255,.8)}
+        .pricing-head h2{margin:10px 0 0;font-size:clamp(30px,4vw,44px)}
+        .pricing-head>p{max-width:500px;margin:0;color:#91a3ba;line-height:1.65}
+        .pricing-grid{
+            display:grid;grid-template-columns:repeat(3,1fr);gap:16px;
+        }
+        .price-card{
+            display:flex;flex-direction:column;min-height:285px;
+            padding:22px;border:1px solid #1a2d44;border-radius:18px;
+            background:linear-gradient(150deg,#0a1727,#06111d);
+            box-shadow:0 18px 45px rgba(0,0,0,.18);
+        }
+        .price-card.featured{border-color:rgba(25,118,255,.55);box-shadow:0 18px 50px rgba(25,118,255,.10)}
+        .price-icon{
+            width:46px;height:46px;display:grid;place-items:center;
+            border-radius:13px;background:rgba(25,118,255,.13);
+            border:1px solid rgba(25,118,255,.24);color:#76b5ff;
+            font-size:20px;font-weight:900;margin-bottom:17px;
+        }
+        .price-card h3{margin:0 0 8px;font-size:18px}
+        .price-card p{margin:0;color:#91a3ba;line-height:1.55;font-size:13px}
+        .price-value{margin:18px 0 4px;font-size:31px;font-weight:850;letter-spacing:-.03em;color:white}
+        .price-value small{font-size:12px;color:#8195ad;font-weight:650}
+        .price-options{margin:16px 0 0;display:grid;gap:9px}
+        .price-option{
+            display:flex;justify-content:space-between;gap:12px;
+            padding:10px 0;border-bottom:1px solid #15273b;
+            color:#b9c7d8;font-size:13px;
+        }
+        .price-option b{color:white;white-space:nowrap}
+        .price-card .price-action{
+            margin-top:auto;padding-top:20px;
+            display:flex;align-items:center;justify-content:center;
+            min-height:44px;border-radius:10px;text-decoration:none;
+            font-weight:800;font-size:13px;color:white;
+            background:linear-gradient(135deg,#1976ff,#2563eb);
+        }
+        .price-card .price-action.secondary{
+            background:#091522;border:1px solid #2b4260;color:#e9f2ff;
+        }
+        .price-note{
+            margin-top:20px;padding:15px 17px;border-radius:12px;
+            color:#9eb0c6;background:#071321;border:1px solid #172a40;
+            font-size:12px;line-height:1.55;
+        }
+        @media(max-width:980px){.pricing-grid{grid-template-columns:repeat(2,1fr)}}
+        @media(max-width:680px){
+            .pricing-section{padding:48px 0}
+            .pricing-head{align-items:flex-start;flex-direction:column}
+            .pricing-grid{grid-template-columns:1fr}
+        }
+    </style>
+
+    <div class="container">
+        <div class="pricing-head">
+            <div>
+                <span class="pricing-kicker"><i></i> SERVIÇOS E PREÇOS</span>
+                <h2>Escolha o serviço que você precisa</h2>
+            </div>
+            <p>Valores claros para os principais atendimentos. Para criação de sites e sistemas, cada projeto é analisado individualmente.</p>
+        </div>
+
+        <div class="pricing-grid">
+            <article class="price-card featured">
+                <div class="price-icon">◉</div>
+                <h3>Suporte Técnico</h3>
+                <p>Ajuda para problemas, configurações e suporte no computador.</p>
+                <div class="price-options">
+                    <div class="price-option"><span>Acesso remoto</span><b>{{ format_brl(service_prices.get("Suporte técnico remoto")) }}</b></div>
+                    <div class="price-option"><span>Presencial <small>(inclui deslocamento)</small></span><b>{{ format_brl(service_prices.get("Suporte técnico presencial")) }}</b></div>
+                </div>
+                <a class="price-action" href="{{ url_for('service_request') if current_user.is_authenticated else url_for('login') }}?service=Suporte%20t%C3%A9cnico%20remoto">Solicitar atendimento →</a>
+            </article>
+
+            <article class="price-card">
+                <div class="price-icon">▣</div>
+                <h3>Formatação e Instalação</h3>
+                <p>Formatação do computador e instalação do sistema.</p>
+                <div class="price-options">
+                    <div class="price-option"><span>Sem backup</span><b>{{ format_brl(service_prices.get("Formatação e instalação sem backup")) }}</b></div>
+                    <div class="price-option"><span>Com backup</span><b>{{ format_brl(service_prices.get("Formatação e instalação com backup")) }}</b></div>
+                </div>
+                <a class="price-action" href="{{ url_for('service_request') if current_user.is_authenticated else url_for('login') }}">Solicitar atendimento →</a>
+            </article>
+
+            <article class="price-card">
+                <div class="price-icon">▤</div>
+                <h3>Criação de Currículo</h3>
+                <p>Criação e organização de currículo entregue em PDF.</p>
+                <div class="price-value">{{ format_brl(service_prices.get("Criação de currículo")) }} <small>/ currículo</small></div>
+                <a class="price-action" href="{{ url_for('service_request') if current_user.is_authenticated else url_for('login') }}?service=Cria%C3%A7%C3%A3o%20de%20curr%C3%ADculo">Solicitar atendimento →</a>
+            </article>
+
+            <article class="price-card">
+                <div class="price-icon">R$</div>
+                <h3>Faturas e Boletos</h3>
+                <p>Emissão e auxílio com documentos como DARF, IPTU e IPVA.</p>
+                <div class="price-value">{{ format_brl(service_prices.get("Faturas, boletos e documentos")) }}</div>
+                <a class="price-action" href="{{ url_for('service_request') if current_user.is_authenticated else url_for('login') }}?service=Faturas%2C%20boletos%20e%20documentos">Solicitar atendimento →</a>
+            </article>
+
+            <article class="price-card">
+                <div class="price-icon">⌁</div>
+                <h3>Contas de Água e Luz</h3>
+                <p>Emissão, consulta ou segunda via de contas de consumo.</p>
+                <div class="price-value">{{ format_brl(service_prices.get("Contas de água e luz")) }}</div>
+                <a class="price-action" href="{{ url_for('service_request') if current_user.is_authenticated else url_for('login') }}?service=Contas%20de%20%C3%A1gua%20e%20luz">Solicitar atendimento →</a>
+            </article>
+
+            <article class="price-card featured">
+                <div class="price-icon">&lt;/&gt;</div>
+                <h3>Criação de Sites e Sistemas</h3>
+                <p>Sites, plataformas e sistemas personalizados conforme a necessidade do projeto.</p>
+                <div class="price-value">Sob orçamento</div>
+                <p>O valor varia de acordo com funcionalidades, complexidade e prazo.</p>
+                <a class="price-action secondary" href="{{ url_for('quote_request') if current_user.is_authenticated else url_for('login') }}">Solicitar orçamento →</a>
+            </article>
+        </div>
+
+        <div class="price-note">
+            Os valores apresentados correspondem aos serviços descritos. Necessidades adicionais ou serviços fora do escopo podem exigir nova avaliação antes da execução.
+        </div>
+    </div>
+</section>
+{% else %}
+<section id="servicos" style="padding:70px 0;background:#030b15;color:#f5f8ff">
+  <div class="container">
+    <div style="padding:34px;border:1px solid #1a2d44;border-radius:18px;background:linear-gradient(145deg,#091725,#05101c);display:grid;grid-template-columns:1fr auto;gap:25px;align-items:center">
+      <div><span style="color:#69aaff;font-size:12px;font-weight:800;letter-spacing:.12em">SERVIÇOS</span><h2 style="margin:8px 0 10px;font-size:34px">Consulte serviços e valores na sua conta</h2><p style="margin:0;color:#91a3ba;max-width:720px;line-height:1.6">Os preços são exclusivos para clientes cadastrados. Entre ou crie uma conta para visualizar valores e solicitar atendimento.</p></div>
+      <a href="{{ url_for('login') }}" style="display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 20px;border-radius:10px;background:#1976ff;color:white;text-decoration:none;font-weight:800;white-space:nowrap">Entrar para ver preços →</a>
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<section class="about-strip" id="sobre">
+    <div class="container about-strip-inner reveal">
+        <div><span class="portfolio-kicker"><i></i> SOBRE</span><h2>Soluções digitais feitas para necessidades reais.</h2></div>
+        <p>Meu trabalho combina desenvolvimento, organização e experiência do usuário para criar ferramentas úteis, profissionais e fáceis de usar.</p>
+    </div>
+</section>
+
+
+<section class="testimonials-strip" id="depoimentos">
+  <style>
+    .testimonials-strip{padding:70px 0;background:#020913;color:#f7f9ff}
+    .testimonial-head{display:flex;align-items:end;justify-content:space-between;gap:25px;margin-bottom:24px}
+    .testimonial-head h2{margin:8px 0 0;font-size:34px}
+    .testimonial-head p{max-width:520px;margin:0;color:#91a3ba;line-height:1.6}
+    .testimonial-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}
+    .testimonial-card{padding:20px;border:1px solid #1a2e45;border-radius:15px;background:linear-gradient(145deg,#081623,#05101c)}
+    .testimonial-stars{color:#fbbf24;letter-spacing:2px;font-size:16px}
+    .testimonial-card blockquote{margin:14px 0 18px;color:#dbe6f3;line-height:1.65;font-size:14px}
+    .testimonial-person{display:flex;justify-content:space-between;gap:12px;align-items:center;padding-top:13px;border-top:1px solid #17283b}
+    .testimonial-person strong{font-size:13px}.testimonial-person span{color:#7890aa;font-size:11px}
+    .testimonial-empty{padding:22px;border:1px solid #1a2e45;border-radius:15px;background:#07131f;color:#91a3ba}
+    @media(max-width:900px){.testimonial-grid{grid-template-columns:1fr 1fr}}
+    @media(max-width:620px){.testimonial-head{align-items:flex-start;flex-direction:column}.testimonial-grid{grid-template-columns:1fr}}
+  </style>
+  <div class="container">
+    <div class="testimonial-head">
+      <div><span class="portfolio-kicker"><i></i> DEPOIMENTOS</span><h2>O que os clientes dizem</h2></div>
+      <p>Comentários publicados somente após a conclusão do serviço e aprovação administrativa.</p>
+    </div>
+
+    {% if approved_reviews %}
+    <div class="testimonial-grid">
+      {% for review in approved_reviews %}
+      <article class="testimonial-card">
+        <div class="testimonial-stars">
+          {% set rounded = review.average_rating|round|int %}
+          {% for i in range(1, 6) %}{{ "★" if i <= rounded else "☆" }}{% endfor %}
+        </div>
+        <blockquote>“{{ review.comment or "Atendimento avaliado com sucesso." }}”</blockquote>
+        <div class="testimonial-person">
+          <strong>{{ review.customer.name.split()[0] }}</strong>
+          <span>{{ review.service_request.service }}</span>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="testimonial-empty">Os depoimentos aprovados de clientes aparecerão aqui.</div>
+    {% endif %}
+  </div>
+</section>
+
+
+<section class="dev-final-cta">
+    <div class="container final-cta-card reveal">
+        <div class="cta-icon">▣</div>
+        <div class="cta-copy"><h2>Vamos tirar seu projeto do papel?</h2><p>Entre em contato e descubra como posso ajudar você ou sua empresa.</p></div>
+        <div class="cta-buttons">
+            <a class="btn dev-primary" href="{{ url_for('request_choice') }}">▣ Agendar atendimento</a>
+            <a class="btn dev-secondary" href="{{ url_for('quote_request') if current_user.is_authenticated else url_for('register') }}">▧ Solicitar orçamento</a>
+        </div>
+    </div>
+</section>
+</div>
+
+<!-- PORTFOLIO SLIDER START -->
+<style>
+
+html{scroll-behavior:smooth}
+#projetos{scroll-margin-top:90px}
+
+.showcase-section{
+    padding:82px 0 92px;
+    background:
+        radial-gradient(circle at 15% 15%,rgba(19,118,255,.08),transparent 26%),
+        #030a13;
+    color:#f6f9ff;
+    overflow:hidden;
+}
+.showcase-wrap{
+    width:min(1180px,calc(100% - 36px));
+    margin:auto;
+}
+.showcase-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:end;
+    gap:28px;
+    margin-bottom:28px;
+}
+.showcase-head-copy{max-width:690px}
+.showcase-eyebrow{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    color:#72adff;
+    font-size:10px;
+    font-weight:850;
+    letter-spacing:.14em;
+}
+.showcase-eyebrow i{
+    width:7px;height:7px;border-radius:50%;
+    background:#1976ff;
+    box-shadow:0 0 15px rgba(25,118,255,.75);
+}
+.showcase-head h2{
+    margin:9px 0 9px;
+    font-size:clamp(28px,4vw,42px);
+    line-height:1.12;
+}
+.showcase-head p{
+    margin:0;
+    color:#8fa2b9;
+    font-size:14px;
+    line-height:1.65;
+}
+.showcase-link{
+    flex:none;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:11px 14px;
+    border:1px solid #27415e;
+    border-radius:10px;
+    color:#dce9f7;
+    text-decoration:none;
+    font-size:11px;
+    font-weight:750;
+}
+.showcase-slider{
+    position:relative;
+    border:1px solid #1b3047;
+    border-radius:22px;
+    overflow:hidden;
+    background:#06111d;
+    box-shadow:0 24px 60px rgba(0,0,0,.25);
+}
+.showcase-track{
+    display:flex;
+    transition:transform .65s cubic-bezier(.22,.61,.36,1);
+}
+.showcase-slide{
+    min-width:100%;
+    display:grid;
+    grid-template-columns:minmax(0,1.55fr) minmax(280px,.65fr);
+    min-height:500px;
+}
+.showcase-image-wrap{
+    position:relative;
+    min-height:500px;
+    background:#0a1420;
+}
+.showcase-image-wrap img{
+    width:100%;
+    height:100%;
+    display:block;
+    object-fit:cover;
+    object-position:center top;
+}
+.showcase-info{
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    padding:38px;
+    background:
+        radial-gradient(circle at 100% 0,rgba(19,118,255,.10),transparent 36%),
+        linear-gradient(145deg,#091827,#06111d);
+}
+.showcase-project-tag{
+    color:#76b0ff;
+    font-size:10px;
+    font-weight:850;
+    letter-spacing:.13em;
+}
+.showcase-info h3{
+    margin:9px 0 10px;
+    font-size:28px;
+}
+.showcase-info p{
+    margin:0 0 18px;
+    color:#91a4ba;
+    font-size:13px;
+    line-height:1.65;
+}
+.showcase-features{
+    display:flex;
+    flex-wrap:wrap;
+    gap:7px;
+    margin-bottom:24px;
+}
+.showcase-features span{
+    padding:6px 9px;
+    border:1px solid #22384f;
+    border-radius:999px;
+    color:#9fb0c3;
+    background:#071521;
+    font-size:10px;
+}
+.showcase-open{
+    width:max-content;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:11px 14px;
+    border-radius:9px;
+    background:#1976ff;
+    color:#fff;
+    text-decoration:none;
+    font-size:11px;
+    font-weight:850;
+}
+.showcase-controls{
+    position:absolute;
+    left:18px;
+    right:18px;
+    bottom:18px;
+    z-index:5;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    pointer-events:none;
+}
+.showcase-arrows{
+    display:flex;
+    gap:8px;
+    pointer-events:auto;
+}
+.showcase-arrow{
+    width:38px;height:38px;
+    display:grid;place-items:center;
+    border:1px solid rgba(255,255,255,.20);
+    border-radius:10px;
+    background:rgba(2,8,16,.74);
+    color:#fff;
+    cursor:pointer;
+}
+.showcase-dots{
+    display:flex;
+    gap:7px;
+    pointer-events:auto;
+}
+.showcase-dot{
+    width:8px;height:8px;
+    padding:0;border:0;border-radius:999px;
+    background:#425268;
+    cursor:pointer;
+    transition:.2s;
+}
+.showcase-dot.active{
+    width:24px;
+    background:#1976ff;
+}
+.showcase-note{
+    margin-top:13px;
+    color:#60758d;
+    font-size:10px;
+    text-align:right;
+}
+@media(max-width:900px){
+    .showcase-head{align-items:flex-start;flex-direction:column}
+    .showcase-slide{grid-template-columns:1fr}
+    .showcase-image-wrap{min-height:330px}
+    .showcase-info{padding:28px 26px 76px}
+}
+@media(max-width:560px){
+    .showcase-section{padding:58px 0 68px}
+    .showcase-wrap{width:min(100% - 24px,1180px)}
+    .showcase-image-wrap{min-height:220px}
+    .showcase-info h3{font-size:23px}
+    .showcase-link{display:none}
+}
+</style>
+
+<section class="showcase-section" id="projetos">
+    <div class="showcase-wrap">
+        <header class="showcase-head">
+            <div class="showcase-head-copy">
+                <span class="showcase-eyebrow"><i></i> PROJETOS DESENVOLVIDOS</span>
+                <h2>Projetos que já ganharam vida.</h2>
+                <p>Conheça alguns dos trabalhos que desenvolvi, com foco em experiência do usuário, organização e identidade visual.</p>
+            </div>
+            <a class="showcase-link"
+               href="https://laura-nails-v2.onrender.com/"
+               target="_blank"
+               rel="noopener noreferrer">
+                Visitar projeto da Laura ↗
+            </a>
+        </header>
+
+        <div class="showcase-slider" id="portfolioShowcase">
+            <div class="showcase-track">
+
+                <article class="showcase-slide">
+                    <div class="showcase-image-wrap">
+                        <img src="{{ url_for('static', filename='images/portfolio_laura_home.png') }}"
+                             alt="Página inicial do projeto Laura Silva Nail Designer">
+                    </div>
+                    <div class="showcase-info">
+                        <span class="showcase-project-tag">LAURA SILVA · NAIL DESIGNER</span>
+                        <h3>Site e plataforma de agendamento</h3>
+                        <p>Projeto desenvolvido para apresentar os trabalhos da profissional, divulgar serviços e facilitar o agendamento dos clientes.</p>
+                        <div class="showcase-features">
+                            <span>Site responsivo</span>
+                            <span>Agendamento</span>
+                            <span>Área do cliente</span>
+                            <span>Identidade visual</span>
+                        </div>
+                        <a class="showcase-open"
+                           href="https://laura-nails-v2.onrender.com/"
+                           target="_blank"
+                           rel="noopener noreferrer">
+                            Abrir projeto →
+                        </a>
+                    </div>
+                </article>
+
+                <article class="showcase-slide">
+                    <div class="showcase-image-wrap">
+                        <img src="{{ url_for('static', filename='images/portfolio_laura_login.png') }}"
+                             alt="Tela de login do projeto Laura Silva Nail Designer">
+                    </div>
+                    <div class="showcase-info">
+                        <span class="showcase-project-tag">ÁREA DO CLIENTE</span>
+                        <h3>Experiência completa para o cliente</h3>
+                        <p>O mesmo projeto também possui autenticação e área dedicada para os clientes utilizarem os recursos da plataforma.</p>
+                        <div class="showcase-features">
+                            <span>Login</span>
+                            <span>Conta do cliente</span>
+                            <span>Interface personalizada</span>
+                            <span>Fluxo de atendimento</span>
+                        </div>
+                        <a class="showcase-open"
+                           href="https://laura-nails-v2.onrender.com/"
+                           target="_blank"
+                           rel="noopener noreferrer">
+                            Conhecer o projeto →
+                        </a>
+                    </div>
+                </article>
+
+            </div>
+
+            <div class="showcase-controls">
+                <div class="showcase-arrows">
+                    <button class="showcase-arrow showcase-prev" type="button" aria-label="Slide anterior">←</button>
+                    <button class="showcase-arrow showcase-next" type="button" aria-label="Próximo slide">→</button>
+                </div>
+                <div class="showcase-dots">
+                    <button class="showcase-dot active" type="button" aria-label="Slide 1"></button>
+                    <button class="showcase-dot" type="button" aria-label="Slide 2"></button>
+                </div>
+            </div>
+        </div>
+
+        <p class="showcase-note">Novos projetos poderão ser adicionados futuramente.</p>
+    </div>
+</section>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const slider = document.getElementById("portfolioShowcase");
+    if (!slider) return;
+
+    const track = slider.querySelector(".showcase-track");
+    const slides = [...slider.querySelectorAll(".showcase-slide")];
+    const dots = [...slider.querySelectorAll(".showcase-dot")];
+    const prev = slider.querySelector(".showcase-prev");
+    const next = slider.querySelector(".showcase-next");
+
+    let current = 0;
+    let timer;
+
+    function goTo(index){
+        current = (index + slides.length) % slides.length;
+        track.style.transform = `translateX(-${current * 100}%)`;
+        dots.forEach((dot, i) => dot.classList.toggle("active", i === current));
+    }
+
+    function stopAuto(){
+        if(timer) clearInterval(timer);
+    }
+
+    function startAuto(){
+        stopAuto();
+        timer = setInterval(() => goTo(current + 1), 5000);
+    }
+
+    prev.addEventListener("click", () => {
+        goTo(current - 1);
+        startAuto();
+    });
+
+    next.addEventListener("click", () => {
+        goTo(current + 1);
+        startAuto();
+    });
+
+    dots.forEach((dot, i) => {
+        dot.addEventListener("click", () => {
+            goTo(i);
+            startAuto();
+        });
+    });
+
+    slider.addEventListener("mouseenter", stopAuto);
+    slider.addEventListener("mouseleave", startAuto);
+
+    let touchStart = 0;
+    slider.addEventListener("touchstart", e => {
+        touchStart = e.touches[0].clientX;
+    }, {passive:true});
+
+    slider.addEventListener("touchend", e => {
+        const diff = e.changedTouches[0].clientX - touchStart;
+        if(Math.abs(diff) > 45){
+            goTo(current + (diff < 0 ? 1 : -1));
+            startAuto();
+        }
+    }, {passive:true});
+
+    startAuto();
+});
+</script>
+<!-- PORTFOLIO SLIDER END -->
+
+{% endblock %}

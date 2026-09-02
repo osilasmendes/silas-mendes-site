@@ -1,0 +1,63 @@
+SILAS MENDES — PASTA CORRETA PARA PUBLICAÇÃO
+============================================
+
+ESTA PASTA FOI FEITA DO ZERO A PARTIR DO ZIP REAL QUE VOCÊ ENVIOU.
+
+ELA CONTÉM:
+- app.py real e completo
+- templates completos
+- static completo (CSS, JS e imagens)
+- requirements.txt
+- render.yaml
+- .gitignore
+- .env.example
+
+NÃO CONTÉM, DE PROPÓSITO:
+- .env
+- .venv
+- __pycache__
+- instance/silas_mendes.db
+
+Esses arquivos são locais e NÃO devem ser enviados ao GitHub.
+
+PASSO 1 — USE UMA PASTA NOVA
+Extraia este ZIP em uma pasta NOVA.
+Não misture com as pastas anteriores que usamos.
+
+PASSO 2 — GITHUB
+Você pode apagar os arquivos do repositório atual e substituir por todo
+o conteúdo desta pasta, ou criar um repositório novo.
+
+Comandos:
+git init
+git add .
+git commit -m "Versao correta completa para producao"
+git branch -M main
+git remote add origin URL_DO_REPOSITORIO
+git push -u origin main
+
+Se o remote já existir, não use 'git remote add origin' novamente.
+
+PASSO 3 — RENDER
+Build Command:
+pip install -r requirements.txt
+
+Start Command:
+gunicorn app:app
+
+PASSO 4 — ENVIRONMENT DO RENDER
+Configure:
+DATABASE_URL
+SECRET_KEY
+ADMIN_USERNAME
+ADMIN_EMAIL
+ADMIN_PASSWORD
+ADMIN_NAME
+WHATSAPP_NUMBER
+
+IMPORTANTE:
+- Não coloque SECRET_KEY, DATABASE_URL ou ADMIN_PASSWORD no GitHub.
+- O app agora funciona com PostgreSQL sem usar PRAGMA do SQLite.
+- Não faça migração do banco antigo ainda.
+- Primeiro deixe esta versão subir e faça login no ADM.
+- Só depois migraremos os dados antigos em uma etapa separada.

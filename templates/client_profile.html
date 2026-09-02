@@ -1,0 +1,520 @@
+{% extends "base.html" %}
+{% block title %}Meu cadastro | Silas Mendes Desenvolvedor{% endblock %}
+
+{% block content %}
+<style>
+.profile-page{
+    --pp-bg:#030b15;
+    --pp-card:#071422;
+    --pp-border:#1c3048;
+    --pp-text:#f5f8ff;
+    --pp-muted:#91a5bc;
+    --pp-blue:#1976ff;
+    min-height:calc(100vh - 150px);
+    padding:46px 0 72px;
+    background:
+      radial-gradient(circle at 10% 0%,rgba(25,118,255,.12),transparent 30%),
+      var(--pp-bg);
+    color:var(--pp-text);
+}
+.profile-page *{box-sizing:border-box}
+.profile-wrap{
+    width:min(1050px,calc(100% - 36px));
+    margin:auto;
+}
+.profile-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    gap:24px;
+    margin-bottom:20px;
+}
+.profile-eyebrow{
+    color:#6eaeff;
+    font-size:11px;
+    font-weight:850;
+    letter-spacing:.12em;
+}
+.profile-head h1{
+    margin:8px 0 6px;
+    font-size:36px;
+    letter-spacing:-.03em;
+}
+.profile-head p{
+    margin:0;
+    max-width:650px;
+    color:var(--pp-muted);
+    line-height:1.6;
+}
+.profile-back{
+    min-height:42px;
+    display:inline-flex;
+    align-items:center;
+    padding:0 14px;
+    border:1px solid #29405c;
+    border-radius:10px;
+    color:#dbe8f7;
+    text-decoration:none;
+    font-size:12px;
+    font-weight:750;
+    white-space:nowrap;
+}
+.profile-layout{
+    display:grid;
+    grid-template-columns:1fr 310px;
+    gap:18px;
+    align-items:start;
+}
+.profile-card,.profile-side-card{
+    border:1px solid var(--pp-border);
+    border-radius:17px;
+    background:linear-gradient(145deg,#091725,#05101c);
+    box-shadow:0 16px 42px rgba(0,0,0,.18);
+}
+.profile-card{padding:25px}
+.profile-section-title{
+    margin-bottom:18px;
+}
+.profile-section-title h2{
+    margin:0 0 5px;
+    font-size:21px;
+}
+.profile-section-title p{
+    margin:0;
+    color:var(--pp-muted);
+    font-size:12px;
+    line-height:1.55;
+}
+.profile-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+}
+.profile-field{
+    display:grid;
+    gap:7px;
+}
+.profile-field.full{grid-column:1/-1}
+.profile-field span{
+    font-size:12px;
+    font-weight:750;
+    color:#d9e5f2;
+}
+.profile-field small{
+    color:#6e8299;
+    font-size:10px;
+    line-height:1.45;
+}
+.profile-field input{
+    width:100%;
+    min-height:45px;
+    padding:0 13px;
+    border:1px solid #29405a;
+    border-radius:10px;
+    background:#06121f;
+    color:white;
+    outline:none;
+    font:inherit;
+}
+.profile-field input:focus{
+    border-color:var(--pp-blue);
+    box-shadow:0 0 0 3px rgba(25,118,255,.11);
+}
+.profile-divider{
+    height:1px;
+    margin:24px 0;
+    background:#183049;
+}
+.profile-password-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+}
+.profile-actions{
+    display:flex;
+    justify-content:flex-end;
+    gap:10px;
+    margin-top:22px;
+}
+.profile-save{
+    min-height:46px;
+    padding:0 19px;
+    border:0;
+    border-radius:10px;
+    background:linear-gradient(135deg,#1976ff,#2563eb);
+    color:white;
+    font-weight:850;
+    cursor:pointer;
+}
+.profile-cancel{
+    min-height:46px;
+    display:inline-flex;
+    align-items:center;
+    padding:0 17px;
+    border:1px solid #29405a;
+    border-radius:10px;
+    color:#d8e5f2;
+    text-decoration:none;
+    font-weight:750;
+    font-size:12px;
+}
+.profile-side{
+    display:grid;
+    gap:14px;
+}
+.profile-side-card{padding:19px}
+.profile-avatar{
+    width:54px;height:54px;
+    display:grid;place-items:center;
+    margin-bottom:13px;
+    border-radius:15px;
+    background:rgba(25,118,255,.13);
+    border:1px solid rgba(25,118,255,.28);
+    color:#78b5ff;
+    font-size:21px;
+    font-weight:900;
+}
+.profile-side-card h3{
+    margin:0 0 5px;
+    font-size:16px;
+}
+.profile-side-card p{
+    margin:0;
+    color:var(--pp-muted);
+    font-size:12px;
+    line-height:1.6;
+}
+.profile-account-meta{
+    display:grid;
+    gap:9px;
+    margin-top:15px;
+    padding-top:14px;
+    border-top:1px solid #183049;
+}
+.profile-meta-row span{
+    display:block;
+    color:#6e8299;
+    font-size:9px;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+}
+.profile-meta-row strong{
+    display:block;
+    margin-top:3px;
+    color:#dce8f5;
+    font-size:11px;
+}
+.profile-privacy{
+    border-color:rgba(34,197,94,.21);
+    background:linear-gradient(145deg,rgba(34,197,94,.06),#06111e);
+}
+.profile-privacy a{color:#79b5ff;text-decoration:none}
+@media(max-width:850px){
+    .profile-layout{grid-template-columns:1fr}
+    .profile-side{grid-template-columns:1fr 1fr}
+}
+@media(max-width:620px){
+    .profile-head{align-items:flex-start;flex-direction:column}
+    .profile-grid,.profile-password-grid,.profile-side{grid-template-columns:1fr}
+    .profile-card{padding:21px}
+    .profile-actions{flex-direction:column-reverse}
+    .profile-actions>*{width:100%;justify-content:center}
+}
+
+.profile-photo-section{
+    display:grid;
+    grid-template-columns:120px 1fr;
+    gap:22px;
+    align-items:center;
+    margin-bottom:24px;
+    padding:22px;
+    border:1px solid var(--pp-border);
+    border-radius:16px;
+    background:linear-gradient(145deg,#081728,#06111d);
+}
+.profile-photo-preview{
+    width:112px;
+    height:112px;
+    border-radius:50%;
+    overflow:hidden;
+    display:grid;
+    place-items:center;
+    border:3px solid rgba(25,118,255,.35);
+    background:linear-gradient(145deg,#153251,#0a1a2d);
+    box-shadow:0 12px 32px rgba(0,0,0,.24);
+}
+.profile-photo-preview img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+.profile-photo-preview span{
+    font-size:38px;
+    font-weight:900;
+    color:#8ec1ff;
+}
+.profile-photo-copy h2{margin:0 0 6px;font-size:19px}
+.profile-photo-copy p{
+    margin:0 0 14px;
+    max-width:560px;
+    color:var(--pp-muted);
+    line-height:1.55;
+    font-size:12px;
+}
+.profile-photo-input{
+    position:absolute;
+    width:1px;height:1px;
+    opacity:0;
+    pointer-events:none;
+}
+.profile-photo-button{
+    display:inline-flex;
+    min-height:40px;
+    align-items:center;
+    justify-content:center;
+    padding:0 14px;
+    border-radius:9px;
+    background:#1976ff;
+    color:#fff;
+    font-size:11px;
+    font-weight:850;
+    cursor:pointer;
+}
+.profile-photo-file{
+    margin-left:10px;
+    color:#7890aa;
+    font-size:10px;
+}
+.profile-photo-remove{
+    margin-top:10px;
+}
+.profile-photo-remove button{
+    border:0;
+    background:transparent;
+    color:#e97878;
+    font-size:10px;
+    cursor:pointer;
+    padding:0;
+}
+@media(max-width:620px){
+    .profile-photo-section{
+        grid-template-columns:1fr;
+        text-align:center;
+    }
+    .profile-photo-preview{margin:auto}
+    .profile-photo-file{display:block;margin:8px 0 0}
+}
+
+
+.profile-photo-controls{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    flex-wrap:wrap;
+}
+
+.profile-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
+</style>
+
+<section class="profile-page">
+  <div class="profile-wrap">
+    <header class="profile-head">
+      <div>
+        <span class="profile-eyebrow">ÁREA DO CLIENTE · MEU CADASTRO</span>
+        <h1>Suas informações</h1>
+        <p>Consulte e atualize os dados usados para identificação e contato durante os atendimentos.</p>
+      </div>
+      <a class="profile-back" href="{{ url_for('client_dashboard') }}">← Voltar para Minha conta</a>
+    </header>
+
+    <div class="profile-layout">
+      <div class="profile-card">
+
+        <form method="post"
+              action="{{ url_for('client_profile') }}"
+              enctype="multipart/form-data"
+              class="profile-data-form"
+              id="clientProfileForm">
+
+        <div class="profile-photo-section">
+
+          <div class="profile-photo-preview">
+            {% if current_user.profile_photo_record %}
+              <img id="profilePhotoPreview"
+                   src="{{ url_for('profile_photo_file', user_id=current_user.id, v=current_user.profile_photo_record.updated_at.timestamp() if current_user.profile_photo_record else 0) }}"
+                   alt="Foto de perfil de {{ current_user.name }}">
+              <span id="profilePhotoInitial" style="display:none">{{ (current_user.name or 'U')[0]|upper }}</span>
+            {% else %}
+              <img id="profilePhotoPreview" src="" alt="Prévia da foto" style="display:none">
+              <span id="profilePhotoInitial">{{ (current_user.name or 'U')[0]|upper }}</span>
+            {% endif %}
+          </div>
+
+          <div class="profile-photo-copy">
+            <h2>Foto de perfil</h2>
+            <p>Escolha uma imagem JPG, PNG ou WEBP com até 3 MB. A foto será salva junto com os demais dados ao clicar em <strong>Salvar alterações</strong>.</p>
+
+            <div class="profile-photo-controls">
+              <label class="profile-photo-button" for="profile_photo">Escolher foto</label>
+
+              <input id="profile_photo"
+                     class="profile-photo-input"
+                     type="file"
+                     name="profile_photo"
+                     accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp"
+                     required>
+
+            </div>
+
+            <span class="profile-photo-file" id="profilePhotoFile">
+              Nenhuma nova foto selecionada.
+            </span>
+          </div>
+        </div>
+
+        {% if current_user.profile_photo_record %}
+        <form method="post" action="{{ url_for('remove_profile_photo') }}" class="profile-photo-remove">
+          <button type="submit" onclick="return confirm('Remover sua foto de perfil?')">
+            Remover foto atual
+          </button>
+        </form>
+        {% endif %}
+
+        <div class="profile-section-title">
+          <h2>Dados principais</h2>
+          <p>Nome e e-mail são obrigatórios. Os demais campos ajudam a facilitar o contato.</p>
+        </div>
+
+        <div class="profile-grid">
+          <label class="profile-field full">
+            <span>Nome completo *</span>
+            <input type="text" name="name" value="{{ current_user.name }}" maxlength="120" required autocomplete="name">
+          </label>
+
+          <label class="profile-field">
+            <span>E-mail *</span>
+            <input type="email" name="email" value="{{ current_user.email }}" maxlength="150" required autocomplete="email">
+          </label>
+
+          <label class="profile-field">
+            <span>WhatsApp / telefone</span>
+            <input type="tel" name="phone" value="{{ current_user.phone or '' }}" maxlength="30" autocomplete="tel" placeholder="(81) 99999-9999">
+          </label>
+
+          <label class="profile-field">
+            <span>Cidade</span>
+            <input type="text" name="city" value="{{ current_user.city or '' }}" maxlength="100" autocomplete="address-level2" placeholder="Ex.: Recife">
+          </label>
+
+          <label class="profile-field">
+            <span>UF</span>
+            <input type="text" name="state" value="{{ current_user.state or '' }}" maxlength="2" autocomplete="address-level1" placeholder="PE">
+          </label>
+
+          <label class="profile-field">
+            <span>Profissão</span>
+            <input type="text" name="profession" value="{{ current_user.profession or '' }}" maxlength="120" placeholder="Ex.: Analista de suporte">
+          </label>
+
+          <label class="profile-field">
+            <span>Empresa</span>
+            <input type="text" name="company" value="{{ current_user.company or '' }}" maxlength="150" placeholder="Opcional">
+          </label>
+        </div>
+
+        <div class="profile-divider"></div>
+
+        <div class="profile-section-title">
+          <h2>Alterar senha</h2>
+          <p>Preencha somente se quiser trocar sua senha atual.</p>
+        </div>
+
+        <div class="profile-password-grid">
+          <label class="profile-field">
+            <span>Nova senha</span>
+            <input type="password" name="new_password" minlength="6" autocomplete="new-password" placeholder="Mínimo de 6 caracteres">
+          </label>
+
+          <label class="profile-field">
+            <span>Confirmar nova senha</span>
+            <input type="password" name="confirm_password" minlength="6" autocomplete="new-password" placeholder="Repita a nova senha">
+          </label>
+        </div>
+
+        <div class="profile-actions">
+          <a class="profile-cancel" href="{{ url_for('client_dashboard') }}">Cancelar</a>
+          <button class="profile-save" type="submit">Salvar alterações</button>
+        </div>
+      </form>
+      </div>
+
+
+
+      <aside class="profile-side">
+        <section class="profile-side-card">
+          <div class="profile-avatar">
+            {% if current_user.profile_photo_record %}
+              <img src="{{ url_for('profile_photo_file', user_id=current_user.id, v=current_user.profile_photo_record.updated_at.timestamp() if current_user.profile_photo_record else 0) }}"
+                   alt="Foto de perfil">
+            {% else %}
+              {{ current_user.name[:1]|upper }}
+            {% endif %}
+          </div>
+          <h3>{{ current_user.name }}</h3>
+          <p>{{ current_user.email }}</p>
+
+          <div class="profile-account-meta">
+            <div class="profile-meta-row">
+              <span>Conta criada em</span>
+              <strong>{{ current_user.created_at.strftime('%d/%m/%Y') }}</strong>
+            </div>
+            {% if current_user.privacy_accepted_at %}
+            <div class="profile-meta-row">
+              <span>Privacidade aceita em</span>
+              <strong>{{ current_user.privacy_accepted_at.strftime('%d/%m/%Y às %H:%M') }}</strong>
+            </div>
+            {% endif %}
+          </div>
+        </section>
+
+        <section class="profile-side-card profile-privacy">
+          <h3>Proteção dos seus dados</h3>
+          <p>Solicitamos apenas informações úteis para sua conta e atendimento. Cidade, profissão e empresa são opcionais.</p>
+          <p style="margin-top:9px"><a href="{{ url_for('privacy_policy') }}">Consultar Política de Privacidade →</a></p>
+        </section>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+    const input = document.getElementById("profile_photo");
+    const fileText = document.getElementById("profilePhotoFile");
+    const preview = document.getElementById("profilePhotoPreview");
+    const initial = document.getElementById("profilePhotoInitial");
+
+    if(!input || !fileText || !preview) return;
+
+    input.addEventListener("change", function(){
+        const file = this.files && this.files[0];
+
+        if(!file){
+            fileText.textContent = "Nenhuma nova foto selecionada.";
+            return;
+        }
+
+        fileText.textContent = file.name;
+
+        const reader = new FileReader();
+        reader.onload = function(event){
+            preview.src = event.target.result;
+            preview.style.display = "block";
+            if(initial) initial.style.display = "none";
+        };
+        reader.readAsDataURL(file);
+    });
+});
+</script>
+
+{% endblock %}

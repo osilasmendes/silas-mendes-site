@@ -1,0 +1,613 @@
+{% extends "base.html" %}
+{% block title %}Minha conta | Silas Mendes Desenvolvedor{% endblock %}
+
+{% block content %}
+
+<style>
+/* Área do Cliente — estilo isolado */
+.client-page{
+    --cp-bg:#030b15;
+    --cp-card:#071322;
+    --cp-card2:#0a1728;
+    --cp-border:#1b2b40;
+    --cp-text:#f5f8ff;
+    --cp-muted:#91a3ba;
+    --cp-blue:#1976ff;
+    --cp-blue2:#4aa3ff;
+    --cp-purple:#8b5cf6;
+    --cp-pink:#ec4899;
+    --cp-green:#22c55e;
+    min-height:calc(100vh - 150px);
+    padding:42px 0 70px;
+    background:
+      radial-gradient(circle at 10% 0%, rgba(25,118,255,.12), transparent 30%),
+      radial-gradient(circle at 90% 15%, rgba(139,92,246,.08), transparent 28%),
+      var(--cp-bg);
+    color:var(--cp-text);
+}
+.client-page *{box-sizing:border-box}
+.client-page .client-shell{
+    width:min(1180px, calc(100% - 40px));
+    margin:0 auto;
+}
+.client-welcome{
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    gap:28px;
+    margin-bottom:30px;
+}
+.client-eyebrow,.client-section-label{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    color:#79b5ff;
+    font-size:12px;
+    font-weight:800;
+    letter-spacing:.12em;
+}
+.client-eyebrow i{
+    width:8px;height:8px;border-radius:50%;
+    background:var(--cp-blue);
+    box-shadow:0 0 16px rgba(25,118,255,.9);
+}
+.client-welcome h1{
+    margin:12px 0 8px;
+    font-size:clamp(30px,4vw,46px);
+    line-height:1.08;
+}
+.client-welcome p{margin:0;color:var(--cp-muted);font-size:16px}
+.client-actions{display:flex;gap:12px;flex-wrap:wrap}
+.client-page .btn{
+    min-height:46px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    padding:0 18px;
+    border-radius:10px;
+    text-decoration:none;
+    font-weight:750;
+    border:1px solid transparent;
+    transition:.2s ease;
+}
+.client-page .dev-primary{
+    color:white;
+    background:linear-gradient(135deg,var(--cp-blue),#2463eb);
+    box-shadow:0 10px 28px rgba(25,118,255,.18);
+}
+.client-page .dev-primary:hover{transform:translateY(-1px);filter:brightness(1.08)}
+.client-page .dev-secondary{
+    color:#e9f2ff;
+    background:#081421;
+    border-color:#29405c;
+}
+.client-page .dev-secondary:hover{border-color:#4a76a9;background:#0b1a2b}
+
+.client-stats{
+    display:grid;
+    grid-template-columns:1fr 1fr 1.35fr;
+    gap:16px;
+    margin-bottom:22px;
+}
+.client-stat-card{
+    min-height:116px;
+    display:flex;
+    align-items:center;
+    gap:16px;
+    padding:20px;
+    border:1px solid var(--cp-border);
+    border-radius:16px;
+    background:linear-gradient(145deg,rgba(10,23,40,.96),rgba(5,16,29,.96));
+    box-shadow:0 14px 40px rgba(0,0,0,.16);
+}
+.client-stat-icon{
+    flex:0 0 48px;
+    width:48px;height:48px;
+    display:grid;place-items:center;
+    border-radius:13px;
+    font-size:20px;font-weight:900;
+}
+.client-stat-icon.blue{color:#77b5ff;background:rgba(25,118,255,.13);border:1px solid rgba(25,118,255,.25)}
+.client-stat-icon.purple{color:#b99aff;background:rgba(139,92,246,.13);border:1px solid rgba(139,92,246,.25)}
+.client-stat-icon.green{color:#72e69a;background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.23)}
+.client-stat-card>div:last-child{display:grid;grid-template-columns:auto auto;column-gap:7px;align-items:baseline}
+.client-stat-card span{grid-column:1/-1;color:var(--cp-muted);font-size:13px;font-weight:700}
+.client-stat-card strong{font-size:28px;line-height:1.2;color:white}
+.client-stat-card small{color:#71849d;font-size:12px}
+.client-stat-card .client-stat-text{grid-column:1/-1;font-size:18px;margin-top:3px}
+.client-stat-card.wide small{grid-column:1/-1;margin-top:4px}
+
+.client-content-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px;
+    align-items:start;
+}
+.client-panel{
+    min-width:0;
+    overflow:hidden;
+    border:1px solid var(--cp-border);
+    border-radius:18px;
+    background:linear-gradient(180deg,#071422,#050f1b);
+    box-shadow:0 16px 42px rgba(0,0,0,.18);
+}
+.client-panel-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+    padding:22px 22px 18px;
+    border-bottom:1px solid #17283c;
+}
+.client-panel-head h2{margin:6px 0 0;font-size:21px}
+.client-section-label.pink{color:#f08bbb}
+.client-count{
+    min-width:38px;height:38px;padding:0 10px;
+    display:grid;place-items:center;
+    border-radius:10px;
+    background:rgba(25,118,255,.12);
+    border:1px solid rgba(25,118,255,.25);
+    color:#8dc1ff;font-weight:800;
+}
+.pink-count{background:rgba(236,72,153,.1);border-color:rgba(236,72,153,.22);color:#f39bc7}
+.client-request-list{padding:14px}
+.client-request-card{
+    padding:17px;
+    border:1px solid #172a40;
+    border-radius:13px;
+    background:#081523;
+}
+.client-request-card+.client-request-card{margin-top:10px}
+.request-topline{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.request-id{color:#79b5ff;font-size:12px;font-weight:800}
+.quote-id{color:#f08bbb}
+.request-status{
+    display:inline-flex;align-items:center;gap:6px;
+    padding:6px 9px;border-radius:999px;
+    font-size:11px;font-weight:800;
+}
+.request-status i{width:6px;height:6px;border-radius:50%;background:currentColor}
+.request-status.received{color:#86baff;background:rgba(25,118,255,.1)}
+.request-status.progress{color:#f7c65d;background:rgba(245,158,11,.1)}
+.request-status.done{color:#72e69a;background:rgba(34,197,94,.1)}
+.client-request-card h3{margin:13px 0 7px;font-size:17px}
+.client-request-card p{margin:0;color:var(--cp-muted);line-height:1.55;font-size:14px}
+.request-finance{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}.request-finance div{padding:11px 12px;border:1px solid #17304b;border-radius:10px;background:#061321}.request-finance span{display:block;color:#70869e;font-size:10px;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px}.request-finance strong{font-size:13px;color:#f5f8ff}.request-summary-label{display:block;color:#71849d;font-size:10px;text-transform:uppercase;letter-spacing:.08em;margin:13px 0 4px}
+.request-meta{
+    display:flex;flex-wrap:wrap;gap:8px 14px;
+    margin-top:14px;padding-top:12px;
+    border-top:1px solid #15263a;
+    color:#71849d;font-size:11px;
+}
+.project-type-chip{
+    display:inline-flex;padding:5px 8px;margin:0 0 9px;
+    border-radius:999px;color:#f08bbb;background:rgba(236,72,153,.08);
+    font-size:11px;font-weight:750;
+}
+.client-empty{
+    min-height:300px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:38px 24px;
+}
+.empty-icon{
+    width:58px;height:58px;display:grid;place-items:center;
+    border-radius:16px;margin-bottom:15px;
+    color:#86baff;background:rgba(25,118,255,.11);
+    border:1px solid rgba(25,118,255,.23);
+    font-size:22px;
+}
+.pink-empty{color:#f08bbb;background:rgba(236,72,153,.09);border-color:rgba(236,72,153,.2)}
+.client-empty h3{margin:0 0 8px;font-size:18px}
+.client-empty p{max-width:380px;margin:0 0 20px;color:var(--cp-muted);line-height:1.55}
+.compact-client-btn{min-height:42px!important;padding:0 15px!important;font-size:13px}
+
+.client-help-card{
+    margin-top:18px;
+    display:grid;
+    grid-template-columns:auto 1fr auto;
+    align-items:center;
+    gap:17px;
+    padding:20px 22px;
+    border:1px solid #1d3552;
+    border-radius:16px;
+    background:linear-gradient(110deg,rgba(25,118,255,.1),rgba(8,20,34,.96) 35%);
+}
+.client-help-icon{
+    width:44px;height:44px;display:grid;place-items:center;
+    border-radius:12px;background:var(--cp-blue);font-weight:900;
+}
+.client-help-card h2{margin:0 0 4px;font-size:17px}
+.client-help-card p{margin:0;color:var(--cp-muted);font-size:13px}
+
+
+.review-notification{
+    margin:0 0 22px;
+    display:grid;
+    grid-template-columns:auto 1fr;
+    gap:18px;
+    padding:22px;
+    border:1px solid rgba(245,158,11,.34);
+    border-radius:17px;
+    background:linear-gradient(120deg,rgba(245,158,11,.10),rgba(8,20,34,.98) 35%);
+}
+.review-notification-icon{
+    width:50px;height:50px;display:grid;place-items:center;
+    border-radius:14px;background:rgba(245,158,11,.14);
+    border:1px solid rgba(245,158,11,.25);
+    color:#fbbf24;font-size:23px
+}
+.review-notification-copy>span{
+    color:#fbbf24;font-size:11px;font-weight:850;letter-spacing:.11em
+}
+.review-notification h2{margin:5px 0 6px;font-size:20px}
+.review-notification p{margin:0;color:#91a3ba;line-height:1.55;font-size:13px}
+.review-pending-list{display:grid;gap:8px;margin-top:14px}
+.review-pending-list a{
+    display:flex;align-items:center;justify-content:space-between;gap:14px;
+    padding:12px 13px;border-radius:11px;border:1px solid #20334a;
+    background:#071523;text-decoration:none;color:white
+}
+.review-pending-list a:hover{border-color:#3a5f88}
+.review-pending-list strong{display:block;font-size:13px}
+.review-pending-list small{display:block;margin-top:3px;color:#7f93ab;font-size:11px}
+.review-pending-list a>span{color:#fbbf24;font-size:12px;font-weight:800;white-space:nowrap}
+
+
+.client-profile-shortcut{
+    margin-top:18px;
+    display:grid;
+    grid-template-columns:auto 1fr auto;
+    align-items:center;
+    gap:17px;
+    padding:20px 22px;
+    border:1px solid #1d3552;
+    border-radius:16px;
+    background:linear-gradient(110deg,rgba(79,70,229,.10),rgba(8,20,34,.96) 38%);
+}
+.client-profile-shortcut-icon{
+    width:44px;height:44px;display:grid;place-items:center;
+    border-radius:12px;background:rgba(99,102,241,.16);
+    border:1px solid rgba(99,102,241,.30);
+    color:#a5b4fc;font-weight:900;
+}
+.client-profile-shortcut span{
+    color:#9da8ff;font-size:10px;font-weight:850;letter-spacing:.11em
+}
+.client-profile-shortcut h2{margin:4px 0;font-size:17px}
+.client-profile-shortcut p{margin:0;color:var(--cp-muted);font-size:13px}
+@media(max-width:700px){
+    .client-profile-shortcut{grid-template-columns:auto 1fr}
+    .client-profile-shortcut .btn{grid-column:1/-1;width:100%}
+}
+
+
+.client-cancel-reason{
+    margin:11px 0 2px;padding:10px 11px;border-radius:9px;
+    border-left:3px solid #ef4444;background:rgba(239,68,68,.07);
+    color:#eeb8b8;font-size:11px;line-height:1.5
+}
+
+
+.client-history{
+    margin-top:18px;
+    border:1px solid rgba(239,68,68,.20);
+    border-radius:16px;
+    background:linear-gradient(145deg,rgba(239,68,68,.035),#07111d);
+    padding:20px;
+}
+.client-history-head{
+    display:flex;justify-content:space-between;align-items:center;
+    gap:12px;margin-bottom:14px;
+}
+.client-history-head h2{margin:4px 0 0;font-size:18px}
+.client-history-count{
+    min-width:30px;height:30px;display:grid;place-items:center;
+    padding:0 8px;border-radius:999px;
+    background:rgba(239,68,68,.10);
+    border:1px solid rgba(239,68,68,.22);
+    color:#fca5a5;font-size:11px;font-weight:850;
+}
+.client-history-list{display:grid;gap:9px}
+.client-history-item{
+    padding:13px;border:1px solid #2f2029;border-radius:11px;
+    background:#090f17;
+}
+.client-history-item .history-top{
+    display:flex;justify-content:space-between;gap:10px;align-items:start;
+}
+.client-history-item h3{margin:0;font-size:13px}
+.client-history-item .history-status{
+    padding:5px 8px;border-radius:999px;
+    background:rgba(239,68,68,.09);color:#fca5a5;
+    font-size:9px;font-weight:850;
+}
+.client-history-item p{margin:8px 0;color:#8fa3b9;font-size:11px}
+.client-history-meta{color:#71869e;font-size:10px}
+
+@media(max-width:900px){
+    .client-welcome{align-items:flex-start;flex-direction:column}
+    .client-stats{grid-template-columns:1fr 1fr}
+    .client-stat-card.wide{grid-column:1/-1}
+    .client-content-grid{grid-template-columns:1fr}
+}
+@media(max-width:620px){
+    .client-page{padding:28px 0 50px}
+    .client-page .client-shell{width:min(100% - 24px,1180px)}
+    .client-actions{width:100%}
+    .client-actions .btn{flex:1}
+    .client-stats{grid-template-columns:1fr}
+    .client-stat-card.wide{grid-column:auto}
+    .client-help-card{grid-template-columns:auto 1fr}
+    .client-help-card .btn{grid-column:1/-1;width:100%}
+}
+
+.client-user-heading{
+    display:flex;
+    align-items:center;
+    gap:16px;
+}
+.client-avatar{
+    flex:0 0 66px;
+    width:66px;
+    height:66px;
+    border-radius:50%;
+    overflow:hidden;
+    display:grid;
+    place-items:center;
+    border:2px solid rgba(25,118,255,.35);
+    background:linear-gradient(145deg,#173757,#091c31);
+    box-shadow:0 10px 28px rgba(0,0,0,.2);
+}
+.client-avatar img{width:100%;height:100%;object-fit:cover}
+.client-avatar span{font-size:24px;font-weight:900;color:#91c5ff}
+@media(max-width:650px){
+    .client-avatar{width:56px;height:56px;flex-basis:56px}
+}
+
+</style>
+
+<section class="client-page">
+    <div class="container client-shell">
+        <div class="client-welcome">
+            <div>
+      <div class="client-user-heading">
+        <a class="client-avatar" href="{{ url_for('client_profile') }}" aria-label="Abrir meu cadastro">
+          {% if current_user.profile_photo_record %}
+            <img src="{{ url_for('profile_photo_file', user_id=current_user.id, v=current_user.profile_photo_record.updated_at.timestamp() if current_user.profile_photo_record else 0) }}"
+                 alt="Foto de perfil de {{ current_user.name }}">
+          {% else %}
+            <span>{{ (current_user.name or 'U')[0]|upper }}</span>
+          {% endif %}
+        </a>
+        <div>
+
+                <span class="client-eyebrow"><i></i> ÁREA DO CLIENTE</span>
+                <h1>Olá, {{ current_user.name.split()[0] }}.</h1>
+                <p>Acompanhe suas solicitações, consulte o andamento dos pedidos e solicite novos serviços.</p>
+            
+        </div>
+      </div>
+</div>
+            <div class="client-actions">
+                <a class="btn dev-primary" href="{{ url_for('service_request') }}">
+                    <span class="action-symbol">＋</span> Novo atendimento
+                </a>
+                <a class="btn dev-secondary" href="{{ url_for('quote_request') }}">
+                    <span class="action-symbol">▤</span> Solicitar orçamento
+                </a>
+                <a class="btn dev-secondary profile-client-btn" href="{{ url_for('client_profile') }}">
+                    <span class="action-symbol">◉</span> Meu cadastro
+                </a>
+            </div>
+        </div>
+
+
+{% if pending_reviews %}
+<section class="review-notification">
+  <div class="review-notification-icon">★</div>
+  <div class="review-notification-copy">
+    <span>AVALIAÇÃO PENDENTE</span>
+    <h2>Como foi seu atendimento?</h2>
+    <p>
+      Você tem {{ pending_reviews|length }} atendimento{% if pending_reviews|length != 1 %}s{% endif %}
+      concluído{% if pending_reviews|length != 1 %}s{% endif %}. Sua opinião ajuda a melhorar o atendimento e os serviços.
+    </p>
+    <div class="review-pending-list">
+      {% for item in pending_reviews %}
+      <a href="{{ url_for('review_service', item_id=item.id) }}">
+        <div>
+          <strong>#{{ item.id }} · {{ item.service }}</strong>
+          <small>{{ item.details|truncate(80) }}</small>
+        </div>
+        <span>Avaliar agora →</span>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+        <div class="client-stats">
+            <article class="client-stat-card">
+                <div class="client-stat-icon blue">▣</div>
+                <div>
+                    <span>Atendimentos</span>
+                    <strong>{{ requests_list|length }}</strong>
+                    <small>solicitação{% if requests_list|length != 1 %}ões{% endif %}</small>
+                </div>
+            </article>
+            <article class="client-stat-card">
+                <div class="client-stat-icon purple">▤</div>
+                <div>
+                    <span>Orçamentos</span>
+                    <strong>{{ quotes|length }}</strong>
+                    <small>pedido{% if quotes|length != 1 %}s{% endif %}</small>
+                </div>
+            </article>
+            <article class="client-stat-card wide">
+                <div class="client-stat-icon green">✓</div>
+                <div>
+                    <span>Central do cliente</span>
+                    <strong class="client-stat-text">Tudo em um só lugar</strong>
+                    <small>Consulte seus pedidos sempre que precisar.</small>
+                </div>
+            </article>
+        </div>
+
+        <div class="client-content-grid">
+            <section class="client-panel">
+                <div class="client-panel-head">
+                    <div>
+                        <span class="client-section-label">SUPORTE TÉCNICO</span>
+                        <h2>Meus atendimentos</h2>
+                    </div>
+                    <span class="client-count">{{ requests_list|length }}</span>
+                </div>
+
+                {% if requests_list %}
+                <div class="client-request-list">
+                    {% for item in requests_list %}
+                    <article class="client-request-card">
+                        <div class="request-topline">
+                            <span class="request-id">#{{ item.id }}</span>
+                            <span class="request-status {% if item.status == 'Concluída' or item.status == 'Concluído' %}done{% elif item.status == 'Em andamento' %}progress{% else %}received{% endif %}">
+                                <i></i>{{ item.status }}
+                            </span>
+                        </div>
+                        <h3>{{ item.service }}</h3>
+                        <p>{{ item.details }}</p>
+                        <div class="request-meta">
+                            <span>◷ {{ item.created_at.strftime('%d/%m/%Y às %H:%M') }}</span>
+                            <span>Contato: {{ item.preferred_contact }}</span>
+                        </div>
+                    </article>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="client-empty">
+                    <div class="empty-icon">▣</div>
+                    <h3>Nenhum atendimento ainda</h3>
+                    <p>Quando você solicitar um atendimento, poderá acompanhar o status por aqui.</p>
+                    <a class="btn dev-primary compact-client-btn" href="{{ url_for('service_request') }}">Solicitar atendimento</a>
+                </div>
+                {% endif %}
+            </section>
+
+            <section class="client-panel">
+                <div class="client-panel-head">
+                    <div>
+                        <span class="client-section-label pink">PROJETOS DIGITAIS</span>
+                        <h2>Meus orçamentos</h2>
+                    </div>
+                    <span class="client-count pink-count">{{ quotes|length }}</span>
+                </div>
+
+                {% if quotes %}
+                <div class="client-request-list">
+                    {% for item in quotes %}
+                    <article class="client-request-card quote-card">
+                        <div class="request-topline">
+                            <span class="request-id quote-id">#{{ item.id }}</span>
+                            <span class="request-status {% if item.status == 'Concluída' or item.status == 'Concluído' %}done{% elif item.status == 'Em andamento' %}progress{% else %}received{% endif %}">
+                                <i></i>{{ item.status }}
+                            </span>
+                        </div>
+                        <h3>{{ item.project_name or item.project_type }}</h3>
+                        {% if item.project_name %}<span class="project-type-chip">{{ item.project_type }}</span>{% endif %}
+                        <p>{{ item.description }}</p>
+                        {% if item.status == "Cancelada" and item.cancellation_reason %}
+                         <div class="client-cancel-reason"><strong>Motivo do cancelamento:</strong> {{ item.cancellation_reason }}</div>
+                         {% endif %}
+                         <div class="request-meta">
+                            <span>◷ {{ item.created_at.strftime('%d/%m/%Y às %H:%M') }}</span>
+                            {% if item.budget %}<span>Orçamento: {{ item.budget }}</span>{% endif %}
+                            {% if item.deadline %}<span>Prazo: {{ item.deadline }}</span>{% endif %}
+                        </div>
+                    </article>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="client-empty">
+                    <div class="empty-icon pink-empty">▤</div>
+                    <h3>Nenhum orçamento ainda</h3>
+                    <p>Solicite um orçamento para seu novo site, sistema ou solução personalizada.</p>
+                    <a class="btn dev-secondary compact-client-btn" href="{{ url_for('quote_request') }}">Solicitar orçamento</a>
+                </div>
+                {% endif %}
+            </section>
+        </div>
+
+
+
+        {% if cancelled_requests or cancelled_quotes %}
+        <section class="client-history">
+            <div class="client-history-head">
+                <div>
+                    <span class="client-section-label" style="color:#fca5a5">HISTÓRICO</span>
+                    <h2>Pedidos cancelados</h2>
+                </div>
+                <span class="client-history-count">{{ cancelled_requests|length + cancelled_quotes|length }}</span>
+            </div>
+
+            <div class="client-history-list">
+                {% for item in cancelled_requests %}
+                <article class="client-history-item">
+                    <div class="history-top">
+                        <h3>#{{ item.id }} · {{ item.service }}</h3>
+                        <span class="history-status">Cancelado</span>
+                    </div>
+                    <p>{{ item.details }}</p>
+                    <div class="client-cancel-reason">
+                        <strong>Motivo:</strong> {{ item.cancellation_reason or "Motivo não informado" }}
+                    </div>
+                    <div class="client-history-meta">
+                        Cancelado em {{ (item.cancelled_at or item.updated_at or item.created_at).strftime('%d/%m/%Y às %H:%M') }}
+                    </div>
+                </article>
+                {% endfor %}
+
+                {% for item in cancelled_quotes %}
+                <article class="client-history-item">
+                    <div class="history-top">
+                        <h3>#{{ item.id }} · {{ item.project_name or item.project_type }}</h3>
+                        <span class="history-status">Cancelado</span>
+                    </div>
+                    <p>{{ item.description }}</p>
+                    <div class="client-cancel-reason">
+                        <strong>Motivo:</strong> {{ item.cancellation_reason or "Motivo não informado" }}
+                    </div>
+                    <div class="client-history-meta">
+                        Cancelado em {{ (item.cancelled_at or item.updated_at or item.created_at).strftime('%d/%m/%Y às %H:%M') }}
+                    </div>
+                </article>
+                {% endfor %}
+            </div>
+        </section>
+        {% endif %}
+
+        <section class="client-profile-shortcut">
+            <div class="client-profile-shortcut-icon">◉</div>
+            <div>
+                <span>MEUS DADOS</span>
+                <h2>Cadastro e informações da conta</h2>
+                <p>Atualize seu nome, e-mail, WhatsApp e, se desejar, complete seu perfil com cidade, profissão e empresa.</p>
+            </div>
+            <a class="btn dev-secondary" href="{{ url_for('client_profile') }}">Editar cadastro →</a>
+        </section>
+
+        <section class="client-help-card">
+            <div class="client-help-icon">?</div>
+            <div>
+                <h2>Precisa de ajuda?</h2>
+                <p>Abra uma nova solicitação e descreva o que você precisa. Seu pedido ficará registrado nesta área.</p>
+            </div>
+            <a class="btn dev-primary" href="{{ url_for('service_request') }}">Novo atendimento →</a>
+        </section>
+    </div>
+</section>
+{% endblock %}

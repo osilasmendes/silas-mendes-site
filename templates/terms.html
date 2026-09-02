@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block title %}Termos de Uso | Silas Mendes Desenvolvedor{% endblock %}
+
+{% block content %}
+<style>
+.legal-page{--bg:#030b15;--border:#1c3048;--text:#f5f8ff;--muted:#97a9bd;min-height:70vh;padding:52px 0 76px;background:radial-gradient(circle at 12% 0%,rgba(25,118,255,.11),transparent 28%),var(--bg);color:var(--text)}
+.legal-page *{box-sizing:border-box}.legal-wrap{width:min(980px,calc(100% - 34px));margin:auto}.legal-hero{padding:30px;border:1px solid var(--border);border-radius:18px;background:linear-gradient(145deg,#091725,#05101c);margin-bottom:16px}.legal-kicker{color:#6eaeff;font-size:11px;font-weight:850;letter-spacing:.12em}.legal-hero h1{margin:10px 0 9px;font-size:38px}.legal-hero p{margin:0;color:var(--muted);line-height:1.7}.legal-meta{margin-top:15px;color:#71869e;font-size:11px}.legal-card{padding:26px 30px;border:1px solid var(--border);border-radius:16px;background:#06121f}.legal-card h2{margin:30px 0 9px;font-size:20px}.legal-card h2:first-child{margin-top:0}.legal-card p,.legal-card li{color:#a8b7c8;font-size:13px;line-height:1.75}.legal-card ul{padding-left:20px}.legal-highlight{padding:15px 16px;border-radius:11px;border:1px solid rgba(25,118,255,.28);background:rgba(25,118,255,.07);color:#c9d9eb!important}.legal-card a{color:#66a8ff}.legal-actions{display:flex;gap:10px;margin-top:20px}.legal-actions a{padding:11px 14px;border-radius:9px;text-decoration:none;font-weight:750;font-size:12px}.legal-primary{background:#1976ff;color:white!important}.legal-secondary{border:1px solid #29405b;color:#d9e5f2!important}@media(max-width:620px){.legal-hero,.legal-card{padding:22px}.legal-hero h1{font-size:31px}.legal-actions{flex-direction:column}}
+</style>
+
+<section class="legal-page">
+  <div class="legal-wrap">
+    <header class="legal-hero">
+      <span class="legal-kicker">REGRAS DA PLATAFORMA</span>
+      <h1>Termos de Uso</h1>
+      <p>Estes termos apresentam as condições básicas para criação de conta, solicitação e acompanhamento de serviços na plataforma Silas Mendes Desenvolvedor.</p>
+      <div class="legal-meta">Última atualização: 02 de setembro de 2026.</div>
+    </header>
+
+    <article class="legal-card">
+      <p class="legal-highlight">Ao criar uma conta, o cliente declara que leu e aceitou estes Termos de Uso e a Política de Privacidade vigente no momento do cadastro.</p>
+
+      <h2>1. Finalidade da plataforma</h2>
+      <p>O site permite conhecer os serviços oferecidos, criar uma conta, visualizar valores disponíveis para clientes cadastrados, solicitar atendimentos, pedir orçamentos para sites e sistemas, acompanhar o status dos pedidos e enviar avaliações após a conclusão.</p>
+
+      <h2>2. Cadastro e responsabilidade pela conta</h2>
+      <ul>
+        <li>o cliente deve fornecer informações verdadeiras e manter seus dados atualizados;</li>
+        <li>a senha é pessoal e não deve ser compartilhada com terceiros;</li>
+        <li>o usuário é responsável pelo uso de sua conta e deve comunicar situações de acesso indevido assim que identificá-las;</li>
+        <li>contas utilizadas de maneira fraudulenta, abusiva ou incompatível com estes termos poderão ser bloqueadas.</li>
+      </ul>
+
+      <h2>3. Solicitação de serviços</h2>
+      <p>Ao registrar um atendimento, o cliente deve selecionar o serviço e fornecer um resumo suficiente da necessidade. Informações adicionais poderão ser solicitadas antes ou durante a execução. Serviços fora do escopo inicialmente informado podem exigir nova análise ou ajuste de valor.</p>
+
+      <h2>4. Preços e orçamentos</h2>
+      <p>Os preços exibidos para serviços padronizados correspondem às condições informadas na plataforma no momento da solicitação. Criação de sites, sistemas e soluções personalizadas é realizada mediante orçamento, considerando escopo, complexidade, funcionalidades, prazo e demais requisitos.</p>
+
+      <h2>5. Formas de pagamento</h2>
+      <p>A seleção de Pix, cartão de crédito ou cartão de débito dentro da solicitação representa uma preferência de pagamento. A plataforma, em sua configuração atual, não processa diretamente transações financeiras e não armazena dados completos de cartão, CVV ou senha bancária.</p>
+
+      <h2>6. Atendimento e status</h2>
+      <p>As solicitações podem passar por estados como Recebida, Em andamento e Concluída. O status é uma ferramenta de acompanhamento e poderá ser atualizado conforme o andamento real do serviço.</p>
+
+      <h2>7. Comunicação pelo WhatsApp</h2>
+      <p>Ao optar ou prosseguir com a comunicação por WhatsApp, o cliente reconhece que dados necessários do pedido poderão ser utilizados para facilitar o contato e a continuidade do atendimento nesse canal.</p>
+
+      <h2>8. Avaliações e depoimentos</h2>
+      <p>Após a conclusão do atendimento, o cliente poderá avaliar atendimento, site e serviço realizado de 1 a 5 estrelas e deixar comentário opcional. O comentário não será publicado automaticamente. A publicação na seção de depoimentos depende de aprovação administrativa.</p>
+      <p>Comentários ofensivos, ilegais, que exponham dados pessoais desnecessários de terceiros ou que sejam incompatíveis com a finalidade da área poderão não ser publicados.</p>
+
+      <h2>9. Disponibilidade da plataforma</h2>
+      <p>Podem ocorrer interrupções temporárias para manutenção, atualização, falhas de infraestrutura ou situações fora do controle razoável do responsável pela plataforma. Sempre que possível, serão adotadas medidas para restabelecer o serviço.</p>
+
+      <h2>10. Uso adequado</h2>
+      <p>Não é permitido tentar acessar áreas restritas sem autorização, explorar vulnerabilidades, prejudicar o funcionamento do site, utilizar identidade falsa para fraude ou inserir conteúdo ilícito na plataforma.</p>
+
+      <h2>11. Privacidade</h2>
+      <p>O tratamento dos dados pessoais relacionados à conta e às solicitações é detalhado na <a href="{{ url_for('privacy_policy') }}">Política de Privacidade e Proteção de Dados</a>, que integra estes termos.</p>
+
+      <h2>12. Alterações</h2>
+      <p>Os Termos de Uso podem ser atualizados para refletir mudanças nos serviços, funcionalidades ou requisitos legais. A versão vigente ficará disponível nesta página com a respectiva data de atualização.</p>
+
+      <h2>13. Contato</h2>
+      <p>Dúvidas relacionadas a estes termos, à conta ou aos serviços podem ser encaminhadas pelos canais de contato disponibilizados na plataforma.</p>
+
+      <div class="legal-actions">
+        <a class="legal-primary" href="{{ url_for('register') }}">Criar conta</a>
+        <a class="legal-secondary" href="{{ url_for('privacy_policy') }}">Ler Política de Privacidade</a>
+      </div>
+    </article>
+  </div>
+</section>
+{% endblock %}
