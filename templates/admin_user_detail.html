@@ -48,7 +48,7 @@
   <p>Foto de perfil cadastrada pelo cliente.</p>
 </section>
 <section class="ud-card"><h2>Conta</h2><span class="ud-state {{ 'blocked' if user.is_blocked else 'active' }}">{{ "Bloqueada" if user.is_blocked else "Ativa" }}</span>
-<div class="ud-meta"><div><span>Criada em</span><strong>{{ user.created_at.strftime('%d/%m/%Y às %H:%M') }}</strong></div><div><span>Atendimentos</span><strong>{{ requests_list|length }}</strong></div><div><span>Orçamentos</span><strong>{{ quotes|length }}</strong></div></div></section>
+<div class="ud-meta"><div><span>Criada em</span><strong>{{ user.created_at|local_datetime('%d/%m/%Y às %H:%M') }}</strong></div><div><span>Atendimentos</span><strong>{{ requests_list|length }}</strong></div><div><span>Orçamentos</span><strong>{{ quotes|length }}</strong></div></div></section>
 <section class="ud-card">
 <form method="post" action="{{ url_for('toggle_user_block', user_id=user.id) }}"><button class="ud-block" type="submit">{{ "Desbloquear conta" if user.is_blocked else "Bloquear conta" }}</button></form>
 <form style="margin-top:9px" method="post" action="{{ url_for('delete_user', user_id=user.id) }}" onsubmit="return confirm('Excluir definitivamente esta conta e seus registros?');"><button class="ud-delete" type="submit">Excluir conta</button></form>
@@ -57,8 +57,8 @@
 
 <section class="ud-card ud-history"><h2>Histórico do cliente</h2><p>Resumo das solicitações vinculadas a esta conta.</p>
 <div class="ud-history-grid">
-<div>{% for item in requests_list %}<div class="ud-history-item"><strong>#{{ item.id }} · {{ item.service }}</strong><span>{{ item.status }} · {{ format_brl(item.price_cents) }} · {{ item.created_at.strftime('%d/%m/%Y') }}</span></div>{% else %}<div class="ud-history-item">Nenhum atendimento.</div>{% endfor %}</div>
-<div>{% for item in quotes %}<div class="ud-history-item"><strong>#{{ item.id }} · {{ item.project_name or item.project_type }}</strong><span>{{ item.status }} · Final: {{ format_brl(item.final_price_cents) }} · Recebido: {{ format_brl(item.total_received_cents) }} · Saldo: {{ format_brl(item.balance_due_cents) }} · {{ item.created_at.strftime('%d/%m/%Y') }}</span></div>{% else %}<div class="ud-history-item">Nenhum orçamento.</div>{% endfor %}</div>
+<div>{% for item in requests_list %}<div class="ud-history-item"><strong>#{{ item.id }} · {{ item.service }}</strong><span>{{ item.status }} · {{ format_brl(item.price_cents) }} · {{ item.created_at|local_datetime('%d/%m/%Y') }}</span></div>{% else %}<div class="ud-history-item">Nenhum atendimento.</div>{% endfor %}</div>
+<div>{% for item in quotes %}<div class="ud-history-item"><strong>#{{ item.id }} · {{ item.project_name or item.project_type }}</strong><span>{{ item.status }} · Final: {{ format_brl(item.final_price_cents) }} · Recebido: {{ format_brl(item.total_received_cents) }} · Saldo: {{ format_brl(item.balance_due_cents) }} · {{ item.created_at|local_datetime('%d/%m/%Y') }}</span></div>{% else %}<div class="ud-history-item">Nenhum orçamento.</div>{% endfor %}</div>
 </div></section>
 </div></section>
 {% endblock %}

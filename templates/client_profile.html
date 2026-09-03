@@ -466,12 +466,12 @@
           <div class="profile-account-meta">
             <div class="profile-meta-row">
               <span>Conta criada em</span>
-              <strong>{{ current_user.created_at.strftime('%d/%m/%Y') }}</strong>
+              <strong>{{ current_user.created_at|local_datetime('%d/%m/%Y') }}</strong>
             </div>
             {% if current_user.privacy_accepted_at %}
             <div class="profile-meta-row">
               <span>Privacidade aceita em</span>
-              <strong>{{ current_user.privacy_accepted_at.strftime('%d/%m/%Y às %H:%M') }}</strong>
+              <strong>{{ current_user.privacy_accepted_at|local_datetime('%d/%m/%Y às %H:%M') }}</strong>
             </div>
             {% endif %}
           </div>

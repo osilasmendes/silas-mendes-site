@@ -1,9 +1,10 @@
 import os
 from io import BytesIO
-from datetime import datetime
+from datetime import datetime, timezone
 from functools import wraps
 from urllib.parse import quote
 from uuid import uuid4
+from zoneinfo import ZoneInfo
 
 from dotenv import load_dotenv
 from flask import Flask, flash, redirect, render_template, request, send_file, url_for
@@ -59,6 +60,30 @@ def format_brl(cents):
     formatted = f"{value:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
     return f"R$ {formatted}"
 
+
+
+LOCAL_TIMEZONE = ZoneInfo("America/Recife")
+
+
+def to_local_datetime(value):
+    """Converte datetime salvo em UTC para o horário de Recife apenas na exibição."""
+    if value is None:
+        return None
+
+    if value.tzinfo is None:
+        value = value.replace(tzinfo=timezone.utc)
+    else:
+        value = value.astimezone(timezone.utc)
+
+    return value.astimezone(LOCAL_TIMEZONE)
+
+
+@app.template_filter("local_datetime")
+def local_datetime_filter(value, fmt="%d/%m/%Y às %H:%M"):
+    local_value = to_local_datetime(value)
+    if local_value is None:
+        return "—"
+    return local_value.strftime(fmt)
 
 def parse_brl_to_cents(value):
     """Converte entradas como 150,00 / 150.00 / 1.500,00 para centavos."""

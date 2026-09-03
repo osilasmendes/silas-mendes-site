@@ -25,7 +25,7 @@
         <div class="ar-top">
           <div class="ar-person">
             <strong>{{ review.customer.name }}</strong>
-            <span>#{{ review.service_request.id }} · {{ review.service_request.service }} · {{ review.created_at.strftime('%d/%m/%Y às %H:%M') }}</span>
+            <span>#{{ review.service_request.id }} · {{ review.service_request.service }} · {{ review.created_at|local_datetime('%d/%m/%Y às %H:%M') }}</span>
           </div>
           <span class="ar-badge {% if review.testimonial_status == 'Aprovado' %}approved{% elif review.testimonial_status == 'Não publicar' %}rejected{% else %}pending{% endif %}">
             {{ review.testimonial_status }}

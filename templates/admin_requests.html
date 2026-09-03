@@ -50,7 +50,7 @@
 <article class="order">
 <div class="order-top"><div class="order-title"><strong>#{{ item.id }} · {{ item.service }}</strong><span>{{ item.customer.name }} · {{ item.customer.email }}</span></div><span class="status">{{ item.status }}</span></div>
 <p>{{ item.details }}</p>
-<div class="order-meta"><span>Valor: <strong>{{ format_brl(item.price_cents) }}</strong></span><span>Pagamento: <strong>{{ item.payment_method or "Não informado" }}</strong></span><span>Solicitado: {{ item.created_at.strftime('%d/%m/%Y às %H:%M') }}</span></div>
+<div class="order-meta"><span>Valor: <strong>{{ format_brl(item.price_cents) }}</strong></span><span>Pagamento: <strong>{{ item.payment_method or "Não informado" }}</strong></span><span>Solicitado: {{ item.created_at|local_datetime('%d/%m/%Y às %H:%M') }}</span></div>
 {% if item.status == "Cancelada" and item.cancellation_reason %}<div class="cancel-box"><strong>Motivo do cancelamento:</strong> {{ item.cancellation_reason }}</div>{% endif %}
 <form method="post" action="{{ url_for('update_service_status', item_id=item.id) }}" class="order-form status-form">
 <label><span>Status</span><select name="status" class="status-select">{% for s in ['Recebida','Em andamento','Aguardando cliente','Concluída','Cancelada'] %}<option {% if item.status == s %}selected{% endif %}>{{ s }}</option>{% endfor %}</select></label>
@@ -66,7 +66,7 @@
 <article class="order">
 <div class="order-top"><div class="order-title"><strong>#{{ item.id }} · {{ item.project_name or item.project_type }}</strong><span>{{ item.customer.name }} · {{ item.customer.email }}</span></div><span class="status">{{ item.status }}</span></div>
 <p>{{ item.description }}</p>
-<div class="order-meta"><span>Estimativa do cliente: {{ item.budget or "Não informada" }}</span><span>Solicitado: {{ item.created_at.strftime('%d/%m/%Y às %H:%M') }}</span></div>
+<div class="order-meta"><span>Estimativa do cliente: {{ item.budget or "Não informada" }}</span><span>Solicitado: {{ item.created_at|local_datetime('%d/%m/%Y às %H:%M') }}</span></div>
 
 <div class="project-finance">
 <div class="finance-box"><span>Valor final</span><strong>{{ format_brl(item.final_price_cents) }}</strong></div>
@@ -77,7 +77,7 @@
 {% if item.payments %}
 <div class="payment-history">
 {% for payment in item.payments|reverse %}
-<div class="payment-row"><div><strong>+ {{ format_brl(payment.amount_cents) }}</strong> · {{ payment.payment_method }}{% if payment.note %}<small> · {{ payment.note }}</small>{% endif %}</div><small>{{ payment.paid_at.strftime('%d/%m/%Y às %H:%M') }}</small></div>
+<div class="payment-row"><div><strong>+ {{ format_brl(payment.amount_cents) }}</strong> · {{ payment.payment_method }}{% if payment.note %}<small> · {{ payment.note }}</small>{% endif %}</div><small>{{ payment.paid_at|local_datetime('%d/%m/%Y às %H:%M') }}</small></div>
 {% endfor %}
 </div>
 {% endif %}
@@ -134,7 +134,7 @@
         <span>Valor: <strong>{{ format_brl(item.price_cents) }}</strong></span>
         <span class="history-date">
           Cancelado em:
-          {{ (item.cancelled_at or item.updated_at or item.created_at).strftime('%d/%m/%Y às %H:%M') }}
+          {{ (item.cancelled_at or item.updated_at or item.created_at)|local_datetime('%d/%m/%Y às %H:%M') }}
         </span>
       </div>
 
@@ -163,7 +163,7 @@
         <span>Recebido: <strong>{{ format_brl(item.total_received_cents) }}</strong></span>
         <span class="history-date">
           Cancelado em:
-          {{ (item.cancelled_at or item.updated_at or item.created_at).strftime('%d/%m/%Y às %H:%M') }}
+          {{ (item.cancelled_at or item.updated_at or item.created_at)|local_datetime('%d/%m/%Y às %H:%M') }}
         </span>
       </div>
 

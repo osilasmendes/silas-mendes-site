@@ -482,7 +482,7 @@
                         <h3>{{ item.service }}</h3>
                         <p>{{ item.details }}</p>
                         <div class="request-meta">
-                            <span>◷ {{ item.created_at.strftime('%d/%m/%Y às %H:%M') }}</span>
+                            <span>◷ {{ item.created_at|local_datetime('%d/%m/%Y às %H:%M') }}</span>
                             <span>Contato: {{ item.preferred_contact }}</span>
                         </div>
                     </article>
@@ -524,7 +524,7 @@
                          <div class="client-cancel-reason"><strong>Motivo do cancelamento:</strong> {{ item.cancellation_reason }}</div>
                          {% endif %}
                          <div class="request-meta">
-                            <span>◷ {{ item.created_at.strftime('%d/%m/%Y às %H:%M') }}</span>
+                            <span>◷ {{ item.created_at|local_datetime('%d/%m/%Y às %H:%M') }}</span>
                             {% if item.budget %}<span>Orçamento: {{ item.budget }}</span>{% endif %}
                             {% if item.deadline %}<span>Prazo: {{ item.deadline }}</span>{% endif %}
                         </div>
@@ -566,7 +566,7 @@
                         <strong>Motivo:</strong> {{ item.cancellation_reason or "Motivo não informado" }}
                     </div>
                     <div class="client-history-meta">
-                        Cancelado em {{ (item.cancelled_at or item.updated_at or item.created_at).strftime('%d/%m/%Y às %H:%M') }}
+                        Cancelado em {{ (item.cancelled_at or item.updated_at or item.created_at)|local_datetime('%d/%m/%Y às %H:%M') }}
                     </div>
                 </article>
                 {% endfor %}
@@ -582,7 +582,7 @@
                         <strong>Motivo:</strong> {{ item.cancellation_reason or "Motivo não informado" }}
                     </div>
                     <div class="client-history-meta">
-                        Cancelado em {{ (item.cancelled_at or item.updated_at or item.created_at).strftime('%d/%m/%Y às %H:%M') }}
+                        Cancelado em {{ (item.cancelled_at or item.updated_at or item.created_at)|local_datetime('%d/%m/%Y às %H:%M') }}
                     </div>
                 </article>
                 {% endfor %}
