@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}Escolha sua solicitação | Silas Mendes Desenvolvedor{% endblock %}
+{% block title %}Escolha seu projeto | Silas Mendes Desenvolvedor{% endblock %}
 
 {% block content %}
 <style>
@@ -187,57 +187,20 @@
 
         <header class="request-choice-head">
             <span class="eyebrow"><i></i> NOVA SOLICITAÇÃO</span>
-            <h1>Escolha o tipo da solicitação</h1>
-            <p>Selecione uma das opções abaixo para continuar. Cada tipo possui um processo diferente.</p>
+            <h1>O que você quer criar?</h1>
+            <p>Escolha o tipo de projeto para iniciar sua solicitação de orçamento personalizado.</p>
         </header>
 
         <div class="request-choice-grid">
-            <a class="request-option support" href="{{ url_for('service_request') }}">
-                <div class="option-icon">🛠</div>
-                <span class="option-type">SERVIÇO TÉCNICO</span>
-                <h2>Solicitar um serviço técnico</h2>
-                <p>Escolha esta opção quando precisar resolver um problema, realizar manutenção ou contratar um serviço de informática.</p>
-
-                <div class="option-examples">
-                    <span>Suporte remoto</span>
-                    <span>Suporte presencial</span>
-                    <span>Formatação</span>
-                    <span>Instalação</span>
-                    <span>Currículo</span>
-                    <span>Documentos</span>
-                </div>
-
-                <span class="option-button">
-                    Continuar para serviço técnico
-                    <b>→</b>
-                </span>
+            <a class="request-option support" href="{{ url_for('quote_request', tipo='Site') }}">
+                <div class="option-icon">🌐</div><span class="option-type">CRIAÇÃO DE SITE</span><h2>Quero criar um site</h2><p>Para empresas, profissionais e negócios que precisam de uma presença digital moderna, responsiva e profissional.</p><div class="option-examples"><span>Site institucional</span><span>Landing page</span><span>Portfólio</span><span>Catálogo</span><span>Agendamentos</span></div><span class="option-button">Solicitar projeto de site <b>→</b></span>
             </a>
-
-            <a class="request-option project" href="{{ url_for('quote_request') }}">
-                <div class="option-icon">&lt;/&gt;</div>
-                <span class="option-type">SITE OU SISTEMA</span>
-                <h2>Criar um site ou sistema</h2>
-                <p>Escolha esta opção quando quiser desenvolver um projeto digital novo e receber um orçamento personalizado.</p>
-
-                <div class="option-examples">
-                    <span>Site profissional</span>
-                    <span>Landing page</span>
-                    <span>Sistema web</span>
-                    <span>Painel administrativo</span>
-                    <span>Automação</span>
-                </div>
-
-                <span class="option-button">
-                    Continuar para orçamento
-                    <b>→</b>
-                </span>
+            <a class="request-option project" href="{{ url_for('quote_request', tipo='Sistema web') }}">
+                <div class="option-icon">&lt;/&gt;</div><span class="option-type">SISTEMA WEB</span><h2>Quero criar um sistema</h2><p>Para transformar processos e ideias em uma plataforma personalizada com recursos sob medida.</p><div class="option-examples"><span>Login e usuários</span><span>Banco de dados</span><span>Painel administrativo</span><span>Relatórios</span><span>Automação</span></div><span class="option-button">Solicitar projeto de sistema <b>→</b></span>
             </a>
         </div>
 
-        <p class="request-choice-note">
-            <strong>Dica:</strong> se você precisa consertar, configurar ou realizar um serviço, escolha
-            <strong>Serviço técnico</strong>. Se quer desenvolver algo novo, escolha <strong>Site ou sistema</strong>.
-        </p>
+        <p class="request-choice-note"><strong>Todos os projetos são personalizados.</strong> Após receber sua solicitação, o escopo será analisado para preparar o orçamento.</p>
     </div>
 </section>
 {% endblock %}

@@ -375,202 +375,97 @@
     <div class="container client-shell">
         <div class="client-welcome">
             <div>
-      <div class="client-user-heading">
-        <a class="client-avatar" href="{{ url_for('client_profile') }}" aria-label="Abrir meu cadastro">
-          {% if current_user.profile_photo_record %}
-            <img src="{{ url_for('profile_photo_file', user_id=current_user.id, v=current_user.profile_photo_record.updated_at.timestamp() if current_user.profile_photo_record else 0) }}"
-                 alt="Foto de perfil de {{ current_user.name }}">
-          {% else %}
-            <span>{{ (current_user.name or 'U')[0]|upper }}</span>
-          {% endif %}
-        </a>
-        <div>
-
-                <span class="client-eyebrow"><i></i> ÁREA DO CLIENTE</span>
-                <h1>Olá, {{ current_user.name.split()[0] }}.</h1>
-                <p>Acompanhe suas solicitações, consulte o andamento dos pedidos e solicite novos serviços.</p>
-            
-        </div>
-      </div>
-</div>
+                <div class="client-user-heading">
+                    <a class="client-avatar" href="{{ url_for('client_profile') }}" aria-label="Abrir meu cadastro">
+                        {% if current_user.profile_photo_record %}
+                        <img src="{{ url_for('profile_photo_file', user_id=current_user.id, v=current_user.profile_photo_record.updated_at.timestamp() if current_user.profile_photo_record else 0) }}" alt="Foto de perfil de {{ current_user.name }}">
+                        {% else %}
+                        <span>{{ (current_user.name or 'U')[0]|upper }}</span>
+                        {% endif %}
+                    </a>
+                    <div>
+                        <span class="client-eyebrow"><i></i> ÁREA DO CLIENTE</span>
+                        <h1>Olá, {{ current_user.name.split()[0] }}.</h1>
+                        <p>Acompanhe seus projetos e solicite novos sites ou sistemas.</p>
+                    </div>
+                </div>
+            </div>
             <div class="client-actions">
-                <a class="btn dev-primary" href="{{ url_for('service_request') }}">
-                    <span class="action-symbol">＋</span> Novo atendimento
-                </a>
-                <a class="btn dev-secondary" href="{{ url_for('quote_request') }}">
-                    <span class="action-symbol">▤</span> Solicitar orçamento
-                </a>
-                <a class="btn dev-secondary profile-client-btn" href="{{ url_for('client_profile') }}">
-                    <span class="action-symbol">◉</span> Meu cadastro
-                </a>
+                <a class="btn dev-primary" href="{{ url_for('request_choice') }}"><span class="action-symbol">＋</span> Solicitar novo projeto</a>
+                <a class="btn dev-secondary profile-client-btn" href="{{ url_for('client_profile') }}"><span class="action-symbol">◉</span> Meu cadastro</a>
             </div>
         </div>
 
-
-{% if pending_reviews %}
-<section class="review-notification">
-  <div class="review-notification-icon">★</div>
-  <div class="review-notification-copy">
-    <span>AVALIAÇÃO PENDENTE</span>
-    <h2>Como foi seu atendimento?</h2>
-    <p>
-      Você tem {{ pending_reviews|length }} atendimento{% if pending_reviews|length != 1 %}s{% endif %}
-      concluído{% if pending_reviews|length != 1 %}s{% endif %}. Sua opinião ajuda a melhorar o atendimento e os serviços.
-    </p>
-    <div class="review-pending-list">
-      {% for item in pending_reviews %}
-      <a href="{{ url_for('review_service', item_id=item.id) }}">
-        <div>
-          <strong>#{{ item.id }} · {{ item.service }}</strong>
-          <small>{{ item.details|truncate(80) }}</small>
-        </div>
-        <span>Avaliar agora →</span>
-      </a>
-      {% endfor %}
-    </div>
-  </div>
-</section>
-{% endif %}
-
-        <div class="client-stats">
-            <article class="client-stat-card">
-                <div class="client-stat-icon blue">▣</div>
-                <div>
-                    <span>Atendimentos</span>
-                    <strong>{{ requests_list|length }}</strong>
-                    <small>solicitação{% if requests_list|length != 1 %}ões{% endif %}</small>
-                </div>
-            </article>
+        <div class="client-stats" style="grid-template-columns:1fr 1.35fr;">
             <article class="client-stat-card">
                 <div class="client-stat-icon purple">▤</div>
                 <div>
-                    <span>Orçamentos</span>
+                    <span>Projetos</span>
                     <strong>{{ quotes|length }}</strong>
-                    <small>pedido{% if quotes|length != 1 %}s{% endif %}</small>
+                    <small>solicitação{% if quotes|length != 1 %}ões{% endif %}</small>
                 </div>
             </article>
             <article class="client-stat-card wide">
                 <div class="client-stat-icon green">✓</div>
                 <div>
                     <span>Central do cliente</span>
-                    <strong class="client-stat-text">Tudo em um só lugar</strong>
-                    <small>Consulte seus pedidos sempre que precisar.</small>
+                    <strong class="client-stat-text">Sites e sistemas em um só lugar</strong>
+                    <small>Acompanhe cada etapa dos seus projetos.</small>
                 </div>
             </article>
         </div>
 
-        <div class="client-content-grid">
-            <section class="client-panel">
-                <div class="client-panel-head">
-                    <div>
-                        <span class="client-section-label">SUPORTE TÉCNICO</span>
-                        <h2>Meus atendimentos</h2>
+        <section class="client-panel">
+            <div class="client-panel-head">
+                <div>
+                    <span class="client-section-label pink">SITES E SISTEMAS</span>
+                    <h2>Meus projetos</h2>
+                </div>
+                <span class="client-count pink-count">{{ quotes|length }}</span>
+            </div>
+
+            {% if quotes %}
+            <div class="client-request-list">
+                {% for item in quotes %}
+                <article class="client-request-card quote-card">
+                    <div class="request-topline">
+                        <span class="request-id quote-id">#{{ item.id }}</span>
+                        <span class="request-status {% if item.status == 'Concluída' or item.status == 'Concluído' %}done{% elif item.status == 'Em andamento' %}progress{% else %}received{% endif %}"><i></i>{{ item.status }}</span>
                     </div>
-                    <span class="client-count">{{ requests_list|length }}</span>
-                </div>
-
-                {% if requests_list %}
-                <div class="client-request-list">
-                    {% for item in requests_list %}
-                    <article class="client-request-card">
-                        <div class="request-topline">
-                            <span class="request-id">#{{ item.id }}</span>
-                            <span class="request-status {% if item.status == 'Concluída' or item.status == 'Concluído' %}done{% elif item.status == 'Em andamento' %}progress{% else %}received{% endif %}">
-                                <i></i>{{ item.status }}
-                            </span>
-                        </div>
-                        <h3>{{ item.service }}</h3>
-                        <p>{{ item.details }}</p>
-                        <div class="request-meta">
-                            <span>◷ {{ item.created_at|local_datetime('%d/%m/%Y às %H:%M') }}</span>
-                            <span>Contato: {{ item.preferred_contact }}</span>
-                        </div>
-                    </article>
-                    {% endfor %}
-                </div>
-                {% else %}
-                <div class="client-empty">
-                    <div class="empty-icon">▣</div>
-                    <h3>Nenhum atendimento ainda</h3>
-                    <p>Quando você solicitar um atendimento, poderá acompanhar o status por aqui.</p>
-                    <a class="btn dev-primary compact-client-btn" href="{{ url_for('service_request') }}">Solicitar atendimento</a>
-                </div>
-                {% endif %}
-            </section>
-
-            <section class="client-panel">
-                <div class="client-panel-head">
-                    <div>
-                        <span class="client-section-label pink">PROJETOS DIGITAIS</span>
-                        <h2>Meus orçamentos</h2>
+                    <h3>{{ item.project_name or item.project_type }}</h3>
+                    {% if item.project_name %}<span class="project-type-chip">{{ item.project_type }}</span>{% endif %}
+                    <p>{{ item.description }}</p>
+                    {% if item.status == "Cancelada" and item.cancellation_reason %}
+                    <div class="client-cancel-reason"><strong>Motivo do cancelamento:</strong> {{ item.cancellation_reason }}</div>
+                    {% endif %}
+                    <div class="request-meta">
+                        <span>◷ {{ item.created_at|local_datetime('%d/%m/%Y às %H:%M') }}</span>
+                        {% if item.budget %}<span>Orçamento: {{ item.budget }}</span>{% endif %}
+                        {% if item.deadline %}<span>Prazo: {{ item.deadline }}</span>{% endif %}
                     </div>
-                    <span class="client-count pink-count">{{ quotes|length }}</span>
-                </div>
+                </article>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="client-empty">
+                <div class="empty-icon pink-empty">&lt;/&gt;</div>
+                <h3>Seu próximo projeto começa aqui</h3>
+                <p>Solicite um orçamento para um site profissional ou sistema web personalizado.</p>
+                <a class="btn dev-primary compact-client-btn" href="{{ url_for('request_choice') }}">Solicitar projeto</a>
+            </div>
+            {% endif %}
+        </section>
 
-                {% if quotes %}
-                <div class="client-request-list">
-                    {% for item in quotes %}
-                    <article class="client-request-card quote-card">
-                        <div class="request-topline">
-                            <span class="request-id quote-id">#{{ item.id }}</span>
-                            <span class="request-status {% if item.status == 'Concluída' or item.status == 'Concluído' %}done{% elif item.status == 'Em andamento' %}progress{% else %}received{% endif %}">
-                                <i></i>{{ item.status }}
-                            </span>
-                        </div>
-                        <h3>{{ item.project_name or item.project_type }}</h3>
-                        {% if item.project_name %}<span class="project-type-chip">{{ item.project_type }}</span>{% endif %}
-                        <p>{{ item.description }}</p>
-                        {% if item.status == "Cancelada" and item.cancellation_reason %}
-                         <div class="client-cancel-reason"><strong>Motivo do cancelamento:</strong> {{ item.cancellation_reason }}</div>
-                         {% endif %}
-                         <div class="request-meta">
-                            <span>◷ {{ item.created_at|local_datetime('%d/%m/%Y às %H:%M') }}</span>
-                            {% if item.budget %}<span>Orçamento: {{ item.budget }}</span>{% endif %}
-                            {% if item.deadline %}<span>Prazo: {{ item.deadline }}</span>{% endif %}
-                        </div>
-                    </article>
-                    {% endfor %}
-                </div>
-                {% else %}
-                <div class="client-empty">
-                    <div class="empty-icon pink-empty">▤</div>
-                    <h3>Nenhum orçamento ainda</h3>
-                    <p>Solicite um orçamento para seu novo site, sistema ou solução personalizada.</p>
-                    <a class="btn dev-secondary compact-client-btn" href="{{ url_for('quote_request') }}">Solicitar orçamento</a>
-                </div>
-                {% endif %}
-            </section>
-        </div>
-
-
-
-        {% if cancelled_requests or cancelled_quotes %}
+        {% if cancelled_quotes %}
         <section class="client-history">
             <div class="client-history-head">
                 <div>
                     <span class="client-section-label" style="color:#fca5a5">HISTÓRICO</span>
-                    <h2>Pedidos cancelados</h2>
+                    <h2>Projetos cancelados</h2>
                 </div>
-                <span class="client-history-count">{{ cancelled_requests|length + cancelled_quotes|length }}</span>
+                <span class="client-history-count">{{ cancelled_quotes|length }}</span>
             </div>
-
             <div class="client-history-list">
-                {% for item in cancelled_requests %}
-                <article class="client-history-item">
-                    <div class="history-top">
-                        <h3>#{{ item.id }} · {{ item.service }}</h3>
-                        <span class="history-status">Cancelado</span>
-                    </div>
-                    <p>{{ item.details }}</p>
-                    <div class="client-cancel-reason">
-                        <strong>Motivo:</strong> {{ item.cancellation_reason or "Motivo não informado" }}
-                    </div>
-                    <div class="client-history-meta">
-                        Cancelado em {{ (item.cancelled_at or item.updated_at or item.created_at)|local_datetime('%d/%m/%Y às %H:%M') }}
-                    </div>
-                </article>
-                {% endfor %}
-
                 {% for item in cancelled_quotes %}
                 <article class="client-history-item">
                     <div class="history-top">
@@ -578,12 +473,8 @@
                         <span class="history-status">Cancelado</span>
                     </div>
                     <p>{{ item.description }}</p>
-                    <div class="client-cancel-reason">
-                        <strong>Motivo:</strong> {{ item.cancellation_reason or "Motivo não informado" }}
-                    </div>
-                    <div class="client-history-meta">
-                        Cancelado em {{ (item.cancelled_at or item.updated_at or item.created_at)|local_datetime('%d/%m/%Y às %H:%M') }}
-                    </div>
+                    <div class="client-cancel-reason"><strong>Motivo:</strong> {{ item.cancellation_reason or "Motivo não informado" }}</div>
+                    <div class="client-history-meta">Cancelado em {{ (item.cancelled_at or item.updated_at or item.created_at)|local_datetime('%d/%m/%Y às %H:%M') }}</div>
                 </article>
                 {% endfor %}
             </div>
@@ -595,18 +486,18 @@
             <div>
                 <span>MEUS DADOS</span>
                 <h2>Cadastro e informações da conta</h2>
-                <p>Atualize seu nome, e-mail, WhatsApp e, se desejar, complete seu perfil com cidade, profissão e empresa.</p>
+                <p>Atualize seus dados de contato usados nos seus projetos e orçamentos.</p>
             </div>
             <a class="btn dev-secondary" href="{{ url_for('client_profile') }}">Editar cadastro →</a>
         </section>
 
         <section class="client-help-card">
-            <div class="client-help-icon">?</div>
+            <div class="client-help-icon">&lt;/&gt;</div>
             <div>
-                <h2>Precisa de ajuda?</h2>
-                <p>Abra uma nova solicitação e descreva o que você precisa. Seu pedido ficará registrado nesta área.</p>
+                <h2>Tem uma ideia para tirar do papel?</h2>
+                <p>Conte o que você precisa e solicite um orçamento personalizado para seu site ou sistema.</p>
             </div>
-            <a class="btn dev-primary" href="{{ url_for('service_request') }}">Novo atendimento →</a>
+            <a class="btn dev-primary" href="{{ url_for('request_choice') }}">Solicitar projeto →</a>
         </section>
     </div>
 </section>

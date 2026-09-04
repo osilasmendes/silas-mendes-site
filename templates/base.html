@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Silas Mendes Desenvolvedor — sites, sistemas, suporte e soluções digitais.">
+    <meta name="description" content="Silas Mendes Desenvolvedor — criação de sites e sistemas web personalizados.">
     <title>{% block title %}Silas Mendes Desenvolvedor{% endblock %}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -22,7 +22,7 @@
             <a href="{{ url_for('index') }}#inicio">Início</a>
             <a href="{{ url_for('index') }}#sobre">Sobre</a>
             <a href="{{ url_for('index') }}#projetos">Portfólio</a>
-            <a href="{{ url_for('index') }}#servicos">Serviços</a>
+            <a href="{{ url_for('index') }}#solucoes">Soluções</a>
             <a href="{{ url_for('index') }}#depoimentos">Depoimentos</a>
             <a href="{{ url_for('index') }}#contato">Contato</a>
             {% if current_user.is_authenticated %}
@@ -32,10 +32,10 @@
                     <a href="{{ url_for('client_dashboard') }}">Minha conta</a>
                 {% endif %}
                 <a class="nav-outline" href="{{ url_for('logout') }}">Sair</a>
-                <a class="nav-cta" href="{{ url_for('request_choice') }}"><span>▣</span> Agendar atendimento</a>
+                <a class="nav-cta" href="{{ url_for('request_choice') }}"><span>▣</span> Solicitar projeto</a>
             {% else %}
                 <a class="nav-outline" href="{{ url_for('login') }}"><span>♙</span> Entrar</a>
-                <a class="nav-cta" href="{{ url_for('request_choice') }}"><span>▣</span> Agendar atendimento</a>
+                <a class="nav-cta" href="{{ url_for('request_choice') }}"><span>▣</span> Solicitar projeto</a>
             {% endif %}
         </nav>
     </div>

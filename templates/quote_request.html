@@ -39,11 +39,11 @@
             <span>Tipo do projeto <b>*</b></span>
             <select name="project_type" required>
               <option value="">Selecione</option>
-              <option>Site institucional</option>
+              <option {% if selected_project_type == "Site" %}selected{% endif %}>Site</option>
               <option>Portfólio profissional</option>
               <option>Landing page</option>
               <option>Loja / catálogo</option>
-              <option>Sistema web</option>
+              <option {% if selected_project_type == "Sistema web" %}selected{% endif %}>Sistema web</option>
               <option>Painel administrativo</option>
               <option>Automação</option>
               <option>Outro</option>

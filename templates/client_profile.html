@@ -322,7 +322,7 @@
       <div>
         <span class="profile-eyebrow">ÁREA DO CLIENTE · MEU CADASTRO</span>
         <h1>Suas informações</h1>
-        <p>Consulte e atualize os dados usados para identificação e contato durante os atendimentos.</p>
+        <p>Consulte e atualize os dados usados para identificação, contato e acompanhamento dos seus projetos.</p>
       </div>
       <a class="profile-back" href="{{ url_for('client_dashboard') }}">← Voltar para Minha conta</a>
     </header>
@@ -361,8 +361,7 @@
                      class="profile-photo-input"
                      type="file"
                      name="profile_photo"
-                     accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp"
-                     required>
+                     accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp">
 
             </div>
 
@@ -382,7 +381,7 @@
 
         <div class="profile-section-title">
           <h2>Dados principais</h2>
-          <p>Nome e e-mail são obrigatórios. Os demais campos ajudam a facilitar o contato.</p>
+          <p>Nome e e-mail são obrigatórios. Você também pode manter telefone e endereço atualizados para facilitar o contato sobre seus projetos.</p>
         </div>
 
         <div class="profile-grid">
@@ -399,6 +398,21 @@
           <label class="profile-field">
             <span>WhatsApp / telefone</span>
             <input type="tel" name="phone" value="{{ current_user.phone or '' }}" maxlength="30" autocomplete="tel" placeholder="(81) 99999-9999">
+          </label>
+
+          <label class="profile-field full">
+            <span>Endereço</span>
+            <input type="text" name="address" value="{{ current_user.address or '' }}" maxlength="180" autocomplete="street-address" placeholder="Rua, avenida, número e complemento">
+          </label>
+
+          <label class="profile-field">
+            <span>Bairro</span>
+            <input type="text" name="neighborhood" value="{{ current_user.neighborhood or '' }}" maxlength="120" placeholder="Ex.: Boa Viagem">
+          </label>
+
+          <label class="profile-field">
+            <span>CEP</span>
+            <input type="text" name="postal_code" value="{{ current_user.postal_code or '' }}" maxlength="12" autocomplete="postal-code" inputmode="numeric" placeholder="00000-000">
           </label>
 
           <label class="profile-field">
@@ -479,7 +493,7 @@
 
         <section class="profile-side-card profile-privacy">
           <h3>Proteção dos seus dados</h3>
-          <p>Solicitamos apenas informações úteis para sua conta e atendimento. Cidade, profissão e empresa são opcionais.</p>
+          <p>Solicitamos apenas informações úteis para sua conta e seus projetos. Endereço, bairro, cidade, CEP, profissão e empresa são opcionais.</p>
           <p style="margin-top:9px"><a href="{{ url_for('privacy_policy') }}">Consultar Política de Privacidade →</a></p>
         </section>
       </aside>

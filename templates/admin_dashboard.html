@@ -7,14 +7,12 @@
       <div>
         <span class="admin-kicker"><i></i> PAINEL ADMINISTRATIVO</span>
         <h1>Visão geral</h1>
-        <p>Gerencie clientes, acompanhe atendimentos e organize as oportunidades de novos projetos.</p>
+        <p>Gerencie clientes e acompanhe os projetos de sites e sistemas.</p>
       </div>
       <div class="admin-hero-actions">
         <a class="btn admin-btn-outline" href="{{ url_for('admin_users') }}">👥 Gerenciar usuários</a>
-        <a class="btn admin-btn-outline" href="{{ url_for('admin_reviews') }}">★ Avaliações{% if stats.reviews_pending %} ({{ stats.reviews_pending }}){% endif %}</a>
         <a class="btn admin-btn-outline" href="{{ url_for('admin_reports') }}">▥ Relatórios</a>
-        <a class="btn admin-btn-outline" href="{{ url_for('admin_prices') }}">R$ Preços</a>
-        <a class="btn admin-btn-primary" href="{{ url_for('admin_requests') }}">▤ Ver solicitações</a>
+        <a class="btn admin-btn-primary" href="{{ url_for('admin_requests') }}">▤ Ver projetos</a>
       </div>
     </div>
   </section>
@@ -22,93 +20,29 @@
   <section class="admin-content">
     <div class="container">
       <div class="admin-stats-grid">
-        <article class="admin-stat-card">
-          <div class="admin-stat-icon blue">👥</div>
-          <div><span>Clientes</span><strong>{{ stats.users }}</strong><small>usuários cadastrados</small></div>
-        </article>
-        <article class="admin-stat-card">
-          <div class="admin-stat-icon cyan">🛠</div>
-          <div><span>Atendimentos</span><strong>{{ stats.requests }}</strong><small>solicitações recebidas</small></div>
-        </article>
-        <article class="admin-stat-card">
-          <div class="admin-stat-icon purple">⌘</div>
-          <div><span>Orçamentos</span><strong>{{ stats.quotes }}</strong><small>projetos solicitados</small></div>
-        </article>
-        <article class="admin-stat-card">
-          <div class="admin-stat-icon orange">◷</div>
-          <div><span>Em aberto</span><strong>{{ stats.open }}</strong><small>itens que precisam de atenção</small></div>
-        </article>
-        <article class="admin-stat-card">
-          <div class="admin-stat-icon purple">★</div>
-          <div><span>Avaliações</span><strong>{{ stats.reviews_pending }}</strong><small>aguardando moderação</small></div>
-        </article>
-        <article class="admin-stat-card">
-          <div class="admin-stat-icon green">R$</div>
-          <div><span>Vendas no mês</span><strong>{{ format_brl(stats.sales_month_cents) }}</strong><small>pedidos concluídos neste mês</small></div>
-        </article>
-        <article class="admin-stat-card">
-          <div class="admin-stat-icon cyan">Σ</div>
-          <div><span>Total vendido</span><strong>{{ format_brl(stats.sales_total_cents) }}</strong><small>histórico de pedidos concluídos</small></div>
-        </article>
-        <article class="admin-stat-card">
-          <div class="admin-stat-icon green">↓</div>
-          <div><span>Projetos recebidos</span><strong>{{ format_brl(stats.project_received_total_cents) }}</strong><small>{{ format_brl(stats.project_received_month_cents) }} neste mês</small></div>
-        </article>
-        <article class="admin-stat-card">
-          <div class="admin-stat-icon orange">◷</div>
-          <div><span>A receber</span><strong>{{ format_brl(stats.project_pending_cents) }}</strong><small>saldo de sites e sistemas</small></div>
-        </article>
-        <article class="admin-stat-card">
-          <div class="admin-stat-icon orange">×</div>
-          <div><span>Cancelados</span><strong>{{ stats.cancelled }}</strong><small>ordens canceladas</small></div>
-        </article>
+        <article class="admin-stat-card"><div class="admin-stat-icon blue">👥</div><div><span>Clientes</span><strong>{{ stats.users }}</strong><small>usuários cadastrados</small></div></article>
+        <article class="admin-stat-card"><div class="admin-stat-icon purple">⌘</div><div><span>Projetos</span><strong>{{ stats.quotes }}</strong><small>sites e sistemas solicitados</small></div></article>
+        <article class="admin-stat-card"><div class="admin-stat-icon orange">◷</div><div><span>Em aberto</span><strong>{{ stats.open }}</strong><small>projetos que precisam de atenção</small></div></article>
+        <article class="admin-stat-card"><div class="admin-stat-icon green">↓</div><div><span>Recebido em projetos</span><strong>{{ format_brl(stats.project_received_total_cents) }}</strong><small>{{ format_brl(stats.project_received_month_cents) }} neste mês</small></div></article>
+        <article class="admin-stat-card"><div class="admin-stat-icon orange">◷</div><div><span>A receber</span><strong>{{ format_brl(stats.project_pending_cents) }}</strong><small>saldo de sites e sistemas</small></div></article>
+        <article class="admin-stat-card"><div class="admin-stat-icon orange">×</div><div><span>Cancelados</span><strong>{{ stats.cancelled }}</strong><small>projetos cancelados</small></div></article>
       </div>
 
-      <div class="admin-dashboard-grid">
+      <div class="admin-dashboard-grid" style="grid-template-columns:1fr;">
         <section class="admin-panel-card">
           <header class="admin-panel-header">
-            <div>
-              <span class="admin-panel-label">ATENDIMENTOS</span>
-              <h2>Solicitações recentes</h2>
-            </div>
-            <a href="{{ url_for('admin_requests') }}">Ver todos →</a>
-          </header>
-          <div class="admin-list">
-            {% for item in latest_requests %}
-            <article class="admin-list-item">
-              <div class="admin-item-id">#{{ item.id }}</div>
-              <div class="admin-item-main">
-                <strong>{{ item.customer.name }}</strong>
-                <span>{{ item.service }}</span>
-              </div>
-              <span class="admin-status status-{{ item.status|lower|replace(' ', '-')|replace('ã','a')|replace('í','i')|replace('ç','c') }}">{{ item.status }}</span>
-            </article>
-            {% else %}
-            <div class="admin-empty"><b>✓</b><span>Nenhum atendimento recebido.</span></div>
-            {% endfor %}
-          </div>
-        </section>
-
-        <section class="admin-panel-card">
-          <header class="admin-panel-header">
-            <div>
-              <span class="admin-panel-label">ORÇAMENTOS</span>
-              <h2>Projetos recentes</h2>
-            </div>
+            <div><span class="admin-panel-label">SITES E SISTEMAS</span><h2>Projetos recentes</h2></div>
             <a href="{{ url_for('admin_requests') }}">Ver todos →</a>
           </header>
           <div class="admin-list">
             {% for item in latest_quotes %}
             <article class="admin-list-item">
               <div class="admin-item-id">#{{ item.id }}</div>
-              <div class="admin-item-main">
-                <strong>{{ item.customer.name }}</strong>
-                <span>{{ item.project_name or item.project_type }}</span>
-              </div>
+              <div class="admin-item-main"><strong>{{ item.customer.name }}</strong><span>{{ item.project_name or item.project_type }}</span></div>
               <span class="admin-status status-{{ item.status|lower|replace(' ', '-')|replace('ã','a')|replace('í','i')|replace('ç','c') }}">{{ item.status }}</span>
             </article>
             {% else %}
-            <div class="admin-empty"><b>✓</b><span>Nenhum orçamento recebido.</span></div>
+            <div class="admin-empty"><b>✓</b><span>Nenhum projeto recebido.</span></div>
             {% endfor %}
           </div>
         </section>
@@ -116,16 +50,11 @@
 
       <section class="admin-quick-card">
         <div class="admin-quick-icon">⚡</div>
-        <div>
-          <h2>Acesso rápido</h2>
-          <p>Use os atalhos para gerenciar as principais áreas do sistema.</p>
-        </div>
+        <div><h2>Acesso rápido</h2><p>Use os atalhos para gerenciar as principais áreas.</p></div>
         <div class="admin-quick-actions">
-          <a href="{{ url_for('admin_requests') }}">Solicitações</a>
+          <a href="{{ url_for('admin_requests') }}">Projetos</a>
           <a href="{{ url_for('admin_users') }}">Usuários</a>
-          <a href="{{ url_for('admin_reviews') }}">Avaliações</a>
-          <a href="{{ url_for('admin_reports') }}">Relatórios de vendas</a>
-          <a href="{{ url_for('admin_prices') }}">Preços dos serviços</a>
+          <a href="{{ url_for('admin_reports') }}">Relatórios</a>
           <a href="{{ url_for('index') }}">Ver site</a>
         </div>
       </section>

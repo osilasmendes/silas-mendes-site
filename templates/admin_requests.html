@@ -42,26 +42,10 @@
 </style>
 
 <section class="arq-page"><div class="arq-wrap">
-<header class="arq-head"><div><span>ADMINISTRAÇÃO</span><h1>Solicitações e ordens</h1><p>Atualize status, valores dos projetos, recebimentos e cancelamentos.</p></div><a class="arq-back" href="{{ url_for('admin_dashboard') }}">← Voltar ao painel</a></header>
+<header class="arq-head"><div><span>ADMINISTRAÇÃO</span><h1>Projetos</h1><p>Acompanhe sites e sistemas, atualize status, valores, recebimentos e cancelamentos.</p></div><a class="arq-back" href="{{ url_for('admin_dashboard') }}">← Voltar ao painel</a></header>
 <div class="arq-stack">
 
-<section class="arq-card"><h2>Pedidos de serviço ativos · {{ requests_list|length }}</h2><div class="arq-list">
-{% for item in requests_list %}
-<article class="order">
-<div class="order-top"><div class="order-title"><strong>#{{ item.id }} · {{ item.service }}</strong><span>{{ item.customer.name }} · {{ item.customer.email }}</span></div><span class="status">{{ item.status }}</span></div>
-<p>{{ item.details }}</p>
-<div class="order-meta"><span>Valor: <strong>{{ format_brl(item.price_cents) }}</strong></span><span>Pagamento: <strong>{{ item.payment_method or "Não informado" }}</strong></span><span>Solicitado: {{ item.created_at|local_datetime('%d/%m/%Y às %H:%M') }}</span></div>
-{% if item.status == "Cancelada" and item.cancellation_reason %}<div class="cancel-box"><strong>Motivo do cancelamento:</strong> {{ item.cancellation_reason }}</div>{% endif %}
-<form method="post" action="{{ url_for('update_service_status', item_id=item.id) }}" class="order-form status-form">
-<label><span>Status</span><select name="status" class="status-select">{% for s in ['Recebida','Em andamento','Aguardando cliente','Concluída','Cancelada'] %}<option {% if item.status == s %}selected{% endif %}>{{ s }}</option>{% endfor %}</select></label>
-<label class="cancel-reason"><span>Motivo do cancelamento *</span><textarea name="cancellation_reason" placeholder="Ex.: Cliente desistiu">{{ item.cancellation_reason or '' }}</textarea></label>
-<div></div><button type="submit">Salvar</button>
-</form>
-</article>
-{% else %}<div class="empty">Nenhum atendimento recebido.</div>{% endfor %}
-</div></section>
-
-<section class="arq-card"><h2>Sites e sistemas ativos · {{ quotes|length }}</h2><div class="arq-list">
+<section class="arq-card"><h2>Projetos ativos · {{ quotes|length }}</h2><div class="arq-list">
 {% for item in quotes %}
 <article class="order">
 <div class="order-top"><div class="order-title"><strong>#{{ item.id }} · {{ item.project_name or item.project_type }}</strong><span>{{ item.customer.name }} · {{ item.customer.email }}</span></div><span class="status">{{ item.status }}</span></div>
@@ -112,39 +96,11 @@
 
 <section class="arq-card history-card">
   <div class="history-head">
-    <h2>Histórico de pedidos cancelados</h2>
-    <span class="history-count">{{ cancelled_requests|length + cancelled_quotes|length }}</span>
+    <h2>Histórico de projetos cancelados</h2>
+    <span class="history-count">{{ cancelled_quotes|length }}</span>
   </div>
 
   <div class="arq-list">
-    {% for item in cancelled_requests %}
-    <article class="order history-order">
-      <div class="order-top">
-        <div class="order-title">
-          <strong>#{{ item.id }} · {{ item.service }}</strong>
-          <span>{{ item.customer.name }} · {{ item.customer.email }}</span>
-        </div>
-        <span class="status">Cancelada</span>
-      </div>
-
-      <p>{{ item.details }}</p>
-
-      <div class="order-meta">
-        <span>Tipo: <strong>Serviço</strong></span>
-        <span>Valor: <strong>{{ format_brl(item.price_cents) }}</strong></span>
-        <span class="history-date">
-          Cancelado em:
-          {{ (item.cancelled_at or item.updated_at or item.created_at)|local_datetime('%d/%m/%Y às %H:%M') }}
-        </span>
-      </div>
-
-      <div class="cancel-box">
-        <strong>Motivo do cancelamento:</strong>
-        {{ item.cancellation_reason or "Motivo não informado" }}
-      </div>
-    </article>
-    {% endfor %}
-
     {% for item in cancelled_quotes %}
     <article class="order history-order">
       <div class="order-top">
@@ -174,8 +130,8 @@
     </article>
     {% endfor %}
 
-    {% if not cancelled_requests and not cancelled_quotes %}
-    <div class="empty">Nenhum pedido cancelado no histórico.</div>
+    {% if not cancelled_quotes %}
+    <div class="empty">Nenhum projeto cancelado no histórico.</div>
     {% endif %}
   </div>
 </section>

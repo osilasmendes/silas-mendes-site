@@ -166,8 +166,11 @@ class User(UserMixin, db.Model):
     terms_accepted_at = db.Column(db.DateTime, nullable=True)
 
     # Informações opcionais do perfil
+    address = db.Column(db.String(180), nullable=True)
+    neighborhood = db.Column(db.String(120), nullable=True)
     city = db.Column(db.String(100), nullable=True)
     state = db.Column(db.String(2), nullable=True)
+    postal_code = db.Column(db.String(12), nullable=True)
     profession = db.Column(db.String(120), nullable=True)
     company = db.Column(db.String(150), nullable=True)
     profile_image = db.Column(db.String(255), nullable=True)
@@ -531,8 +534,11 @@ def client_profile():
         name = request.form.get("name", "").strip()
         email = request.form.get("email", "").strip().lower()
         phone = request.form.get("phone", "").strip()
+        address = request.form.get("address", "").strip()
+        neighborhood = request.form.get("neighborhood", "").strip()
         city = request.form.get("city", "").strip()
         state = request.form.get("state", "").strip().upper()
+        postal_code = request.form.get("postal_code", "").strip()
         profession = request.form.get("profession", "").strip()
         company = request.form.get("company", "").strip()
         new_password = request.form.get("new_password", "")
@@ -588,8 +594,11 @@ def client_profile():
                     current_user.name = name
                     current_user.email = email
                     current_user.phone = phone or None
+                    current_user.address = address or None
+                    current_user.neighborhood = neighborhood or None
                     current_user.city = city or None
                     current_user.state = state or None
+                    current_user.postal_code = postal_code or None
                     current_user.profession = profession or None
                     current_user.company = company or None
 
@@ -856,58 +865,19 @@ def request_choice():
 @app.route("/atendimento", methods=["GET", "POST"])
 @login_required
 def service_request():
-    current_prices = get_service_prices()
-
-    if request.method == "POST":
-        service = request.form.get("service", "").strip()
-        details = request.form.get("details", "").strip()
-        preferred_contact = request.form.get("preferred_contact", "WhatsApp").strip()
-        payment_method = request.form.get("payment_method", "").strip()
-
-        if service not in current_prices:
-            flash("Selecione um serviço válido.", "danger")
-        elif not details:
-            flash("Descreva sua necessidade.", "danger")
-        elif payment_method not in PAYMENT_METHODS:
-            flash("Selecione a forma de pagamento.", "danger")
-        else:
-            price_cents = current_prices[service]
-            ticket = ServiceRequest(
-                user_id=current_user.id,
-                service=service,
-                details=details,
-                preferred_contact=preferred_contact,
-                price_cents=price_cents,
-                payment_method=payment_method,
-            )
-            db.session.add(ticket)
-            db.session.commit()
-
-            message = (
-                f"Olá, Silas! Nova solicitação de atendimento #{ticket.id}.\n"
-                f"Cliente: {current_user.name}\n"
-                f"Serviço: {service}\n"
-                f"Valor: {format_brl(price_cents)}\n"
-                f"Forma de pagamento: {payment_method}\n"
-                f"Resumo: {details}\n"
-                f"Contato preferido: {preferred_contact}"
-            )
-            return redirect(wa_link(message))
-
-    selected_service = request.args.get("service", "").strip()
-    if selected_service not in current_prices:
-        selected_service = ""
-    return render_template(
-        "service_request.html",
-        selected_service=selected_service,
-        service_prices=current_prices,
-        payment_methods=PAYMENT_METHODS,
-    )
+    # Serviços técnicos foram descontinuados. Mantemos a rota apenas
+    # para compatibilidade com links antigos, sem apagar registros históricos.
+    return redirect(url_for("request_choice"))
 
 
 @app.route("/orcamento", methods=["GET", "POST"])
 @login_required
 def quote_request():
+    # Ao acessar /orcamento sem escolher um tipo de projeto,
+    # primeiro mostramos a tela para escolher entre Site e Sistema.
+    if request.method == "GET" and not request.args.get("tipo", "").strip():
+        return redirect(url_for("request_choice"))
+
     if request.method == "POST":
         project_type = request.form.get("project_type", "").strip()
         project_name = request.form.get("project_name", "").strip()
@@ -940,7 +910,8 @@ def quote_request():
             )
             return redirect(wa_link(message))
 
-    return render_template("quote_request.html")
+    selected_project_type = request.args.get("tipo", "").strip()
+    return render_template("quote_request.html", selected_project_type=selected_project_type)
 
 
 @app.route("/admin")
@@ -999,46 +970,10 @@ def admin_dashboard():
 @login_required
 @admin_required
 def admin_prices():
-    prices = get_service_prices()
-
-    if request.method == "POST":
-        errors = []
-
-        for service_name in DEFAULT_SERVICE_PRICES:
-            field_name = f"price_{list(DEFAULT_SERVICE_PRICES.keys()).index(service_name)}"
-            raw_value = request.form.get(field_name, "").strip()
-            cents = parse_brl_to_cents(raw_value)
-
-            if cents is None:
-                errors.append(f"Valor inválido para: {service_name}")
-                continue
-
-            price_row = ServicePrice.query.filter_by(service_name=service_name).first()
-            if not price_row:
-                price_row = ServicePrice(service_name=service_name, price_cents=cents)
-                db.session.add(price_row)
-            else:
-                price_row.price_cents = cents
-
-        if errors:
-            db.session.rollback()
-            for error in errors:
-                flash(error, "danger")
-        else:
-            db.session.commit()
-            flash("Preços atualizados com sucesso.", "success")
-            return redirect(url_for("admin_prices"))
-
-    prices = get_service_prices()
-    price_rows = []
-    for index, service_name in enumerate(DEFAULT_SERVICE_PRICES.keys()):
-        price_rows.append({
-            "index": index,
-            "service": service_name,
-            "price_cents": prices.get(service_name, DEFAULT_SERVICE_PRICES[service_name]),
-        })
-
-    return render_template("admin_prices.html", price_rows=price_rows)
+    # A tabela de preços dos antigos serviços técnicos não é mais utilizada.
+    # Mantemos a rota apenas para compatibilidade, sem apagar dados históricos.
+    flash("Os serviços técnicos foram descontinuados. Agora o site trabalha apenas com sites e sistemas.", "info")
+    return redirect(url_for("admin_dashboard"))
 
 
 @app.route("/admin/solicitacoes")
@@ -1541,8 +1476,11 @@ def ensure_user_privacy_columns():
     additions = {
         "privacy_accepted_at": _datetime_sql_type(),
         "terms_accepted_at": _datetime_sql_type(),
+        "address": "VARCHAR(180)",
+        "neighborhood": "VARCHAR(120)",
         "city": "VARCHAR(100)",
         "state": "VARCHAR(2)",
+        "postal_code": "VARCHAR(12)",
         "profession": "VARCHAR(120)",
         "company": "VARCHAR(150)",
         "profile_image": "VARCHAR(255)",
